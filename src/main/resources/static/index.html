@@ -1,18 +1,25 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <title>Your first Spring application</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-    <p><a href="/hello">Greet the world!</a></p>
-
-    <form action="/hello" method="GET" id="nameForm">
+<header>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+    <title>Стартовая страница</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css"/>
+</header>
+<body>
+    <div id="header" class="container">
+        <div class="container"><h2>Стрельбицкий Илья</h2></div>
+        <div class="container column"><h3>Группа P32101</h3><h4>3210199 вариант</h4></div>
+    </div>
+    <div id="wrapper" class="container">
         <div>
-            <label for="nameField">How should the app call you?</label>
-            <input name="myName" id="nameField">
-            <button>Greet me!</button>
+            <h2>Текущая дата и время</h2>
+            <div id="clock">
+                <div id="time">00.00.00, 00:00</div>
+            </div>
+            <h3><a href="/main.html">Перейти на основную страницу</a></h3>
         </div>
-    </form>
-    </body>
+    </div>
+    <div id="footer"></div>
+</body>
 </html>
