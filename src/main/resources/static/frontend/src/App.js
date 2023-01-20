@@ -3,28 +3,29 @@ import "primeicons/primeicons.css";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Util from './utils';
+import { DotsManager, CanvasComponent, Canvas } from './Canvas';
+
 
 function App() {
+  const canvas = <CanvasComponent/>;
+
+  /* Обработка формы */
   const {
     register,
     handleSubmit,
     formState: {errors}
   } = useForm();
-
   const onSubmit = (data) => {
     alert(JSON.stringify(data));
     console.log(data);
-  }; // your form submit function which will invoke after successful validation
+  };
+  /* Обработка формы */
 
   return (
     <div className="App">
-      <div id="header" className="container">
-        <div className="container"><h2>Стрельбицкий Илья</h2></div>
-        <div className="container column"><h3>Группа P32101</h3><h4>3210199 вариант</h4></div>
-      </div>
       <div id="wrapper" className="container">
         <div id="left_col">
-          <canvas id="canvas" height="600" width="600" x="0" y="0"></canvas>
+          {canvas}
           <div id="canvas_error" className="error"></div>
         </div>
         <div id="center_col">
@@ -115,7 +116,6 @@ function App() {
           </table>
         </div>
       </div>
-      <div id="footer"></div>
     </div>
   );
 }
