@@ -3,29 +3,13 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import React from "react";
-import { useForm } from "react-hook-form";
-import * as Util from './utils';
-import { DotsManager, CanvasComponent} from './сanvas';
-import { MultiSelect } from 'primereact/multiselect';
+
+import { DotsManager, CanvasComponent } from './сanvas';
+import { MainForm } from './MainForm';
 
 
 function App() {
   const canvas = <CanvasComponent/>;
-
-  /* Обработка формы */
-  function setSelectedValue() {
-
-  }
-  const {
-    register,
-    handleSubmit,
-    formState: {errors}
-  } = useForm();
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data));
-    console.log(data);
-  };
-  /* Обработка формы */
 
   return (
     <div className="App">
@@ -35,41 +19,7 @@ function App() {
           <div id="canvas_error" className="error"></div>
         </div>
         <div id="center_col">
-          <form onSubmit={handleSubmit(onSubmit)} id="dot_form" className="ui-form">
-            <h3>Проверка попадания точки</h3>
-            <div className="form-row">
-              <MultiSelect options={[-5, -4, -3, -2, -1, 0, 1, 2, 3]}/>
-            </div>
-            <div className="form-row">
-              <input
-                  {...register("y", {
-                    required: true,
-                    maxLength: 9,
-                    pattern: /^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$/,
-                    min: -5,
-                    max: 3
-                  })}
-              />
-              <label className="text-input-label">Y:</label>
-            </div>
-            <div className="form-row">
-              <input
-                  {...register("r", {
-                    required: true,
-                    maxLength: 9,
-                    pattern: /^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$/,
-                    min: 1,
-                    max: 4
-                  })}
-              />
-              <label className="text-input-label">R:</label>
-            </div>
-            <input type="submit"/>
-            {Util.outputErrorRequired(errors?.x?.type, errors?.y?.type, errors?.r?.type)}
-            {Util.outputErrorMaxLength(errors?.x?.type, errors?.y?.type, errors?.r?.type)}
-            {Util.outputErrorPattern(errors?.x?.type, errors?.y?.type, errors?.r?.type)}
-            {Util.outputErrorRange(errors?.x?.type, errors?.y?.type, errors?.r?.type)}
-          </form>
+          <MainForm />
         </div>
         <div id="right_col">
           <h2>Результаты проверки</h2>
