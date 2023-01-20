@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { Slider } from 'primereact/slider';
-import * as Utils from "./utils";
-
 
 export class MainForm extends Component {
     constructor(props) {
@@ -54,13 +52,12 @@ export class MainForm extends Component {
         const y = this.state.valueY;
         const r = this.state.selectedValuesR;
         return !(
-            Utils.outputErrorRequired(x, y, r) !== false ||
-            Utils.outputErrorMaxLength(x, y, r) !== false ||
-            Utils.outputErrorPattern(x, y, r) !== false ||
-            Utils.outputErrorRange(x, y, r) !== false ||
-            Utils.outputErrorAmountSelect(x, r) !== false
+            outputErrorRequired(x, y, r) !== false ||
+            outputErrorMaxLength(x, y, r) !== false ||
+            outputErrorPattern(x, y, r) !== false ||
+            outputErrorRange(x, y, r) !== false ||
+            outputErrorAmountSelect(x, r) !== false
         );
-
     }
 
     valueSelectTemplate(option) {
@@ -94,12 +91,13 @@ export class MainForm extends Component {
                                  options={this.valuesX}
                                  onChange={(e) =>
                                      this.setState({ selectedValuesX: e.value })}
-                                 optionLabel="name" placeholder="Выбрать X"/>
+                                 optionLabel="name" placeholder="Выбрать X" id="x"/>
                 </div>
                 <div className="form-row">
                     <label className="text-input-label">Значение Y: {this.state.valueY}</label>
                     <Slider value={this.state.valueY} min={-5} max={5}
-                            onChange={(e) => this.setState({ valueY: e.value })}/>
+                            onChange={(e) => this.setState({ valueY: e.value })}
+                            id="y"/>
                 </div>
                 <div className="form-row">
                     <label className="text-input-label">Значение R:</label>
@@ -107,15 +105,97 @@ export class MainForm extends Component {
                                  options={this.valuesR}
                                  onChange={(e) =>
                                      this.setState({ selectedValuesR: e.value })}
-                                 optionLabel="name" placeholder="Выбрать R"/>
+                                 optionLabel="name" placeholder="Выбрать R" id="r"/>
                 </div>
                 <input type="submit"/>
-                {Utils.outputErrorRequired(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {Utils.outputErrorMaxLength(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {Utils.outputErrorPattern(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {Utils.outputErrorRange(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {Utils.outputErrorAmountSelect(this.state.selectedValuesX, this.state.selectedValuesR)}
+                {outputErrorRequired(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {outputErrorMaxLength(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {outputErrorPattern(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {outputErrorRange(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {outputErrorAmountSelect(this.state.selectedValuesX, this.state.selectedValuesR)}
             </form>
         )
     }
+}
+
+function outputErrorRequired(x, y, r) {
+    const errorLabels = [];
+    if (x === null || y == null || r == null ||
+        x.length === 0 || r.length === 0) {
+        if (x == null || x.length === 0) {errorLabels.push("x");}
+        if (y == null) {errorLabels.push("y");}
+        if (r == null || r.length === 0) {errorLabels.push("r");}
+        return <p className="error">{errorLabels.join(", ")} - необходимо заполнить</p>;
+    }
+    return false;
+}
+function outputErrorMaxLength(x, y, r) {
+    const errorLabels = [];
+    let resultX = true;
+    let resultY = true;
+    let resultR = true;
+    for (let i=0; i < x.length; i++) {
+        if (String(x[i]['code']).length > 9) {resultX = false; break;}
+    }
+    if (String(y).length > 9) {resultY = false;}
+    for (let i=0; i < r.length; i++) {
+        if (String(r[i]['code']).length > 9) {resultR = false; break;}
+    }
+    if (!resultX || !resultY || !resultR) {
+        if (!resultX) {errorLabels.push("x");}
+        if (!resultY) {errorLabels.push("y");}
+        if (!resultR) {errorLabels.push("r");}
+        return <p className="error">{errorLabels.join(", ")} - превышена длина ввода</p>;
+    }
+    return false;
+}
+function outputErrorPattern(x, y, r) {
+    const errorLabels = [];
+    const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
+    let resultX = true;
+    let resultY = true;
+    let resultR = true;
+    for (let i=0; i < x.length; i++) {
+        if (String(x[i]['code']).match(regex) == null) {resultX = false; break;}
+    }
+    if (String(y).match(regex) == null) {resultY = false;}
+    for (let i=0; i < r.length; i++) {
+        if (String(r[i]['code']).match(regex) == null) {resultR = false; break;}
+    }
+    if (!resultX || !resultY || !resultR) {
+        if (!resultX) {errorLabels.push("x");}
+        if (!resultY) {errorLabels.push("y");}
+        if (!resultR) {errorLabels.push("r");}
+        return <p className="error">{errorLabels.join(", ")} - неправильный формат ввода</p>;
+    }
+    return false;
+}
+function outputErrorRange(x, y, r) {
+    const errorLabels = [];
+    let resultX = true;
+    let resultY = true;
+    let resultR = true;
+    for (let i=0; i < x.length; i++) {
+        const valueX = parseFloat(String(x[i]['code']));
+        if (valueX < -5 || valueX > 3) {resultX = false; break;}
+    }
+    const valueY = parseFloat(String(y));
+    if (valueY < -5 || valueY > 3) {resultY = false;}
+    for (let i=0; i < r.length; i++) {
+        const valueR = parseFloat(String(r[i]['code']));
+        if (valueR < 1 || valueR > 3) {resultR = false; break;}
+    }
+    if (!resultX || !resultY || !resultR) {
+        if (!resultX) {errorLabels.push("x");}
+        if (!resultY) {errorLabels.push("y");}
+        if (!resultR) {errorLabels.push("r");}
+        return <p className="error">{errorLabels.join(", ")} - выход за за границы</p>;
+    }
+    return false;
+}
+function outputErrorAmountSelect(x, r) {
+    if (x.length !== r.length) {
+        return <p className="error">x и r - должны иметь одинаковое количество выбранных элементов</p>;
+    }
+    return false;
 }

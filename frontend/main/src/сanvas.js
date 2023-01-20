@@ -16,7 +16,9 @@ export class DotsManager {
 export class CanvasComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {valueR: 1};
         this.canvas = new Canvas();
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
@@ -24,10 +26,46 @@ export class CanvasComponent extends React.Component {
         this.canvas.drawCanvas();
     }
 
+    handleClick(event) {
+        const elementR = document.querySelector('#r .p-multiselect-label');
+        if (elementR === undefined || elementR == null) {
+            return;
+        }
+        const r = elementR.innerText.trim().split(',')[0];
+        this.setState({valueR: r});
+        if (!this.validateR(r)) {
+            return;
+        }
+        const offsetX = event.clientX - event.target.offsetLeft;
+        const offsetY = event.clientY - event.target.offsetTop;
+        const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
+        console.log(r);
+        console.log(xy)
+        console.log(event);
+    }
+
+    validateR(r) {
+        return !(
+            outputErrorRequired(r) !== false ||
+            outputErrorMaxLength(r) !== false ||
+            outputErrorPattern(r) !== false ||
+            outputErrorRange(r) !== false
+        );
+    }
+
     render() {
-        return <canvas id="canvas" height="600" width="600" x="0" y="0"></canvas>;
+        return (
+            <div>
+                <canvas id="canvas" height="600" width="600" onClick={(e) => this.handleClick(e)}></canvas>
+                {outputErrorRequired(this.state.valueR)}
+                {outputErrorMaxLength(this.state.valueR)}
+                {outputErrorPattern(this.state.valueR)}
+                {outputErrorRange(this.state.valueR)}
+            </div>
+        );
     }
 }
+
 export class Canvas {
     constructor() {
         this.dotsManager = new DotsManager();
@@ -212,4 +250,30 @@ export class Canvas {
             ctx.fill();
         }
     }
+}
+function outputErrorRequired(r) {
+    if (r == null || r.length === 0) {
+        return <p className="error">не выбрано r</p>;
+    }
+    return false;
+}
+function outputErrorMaxLength(r) {
+    if (String(r).length > 9) {
+        return <p className="error">r - превышена длина ввода</p>;
+    }
+    return false;
+}
+function outputErrorPattern(r) {
+    const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
+    if (String(r).match(regex) == null) {
+        return <p className="error">r - неправильный формат ввода</p>;
+    }
+    return false;
+}
+function outputErrorRange(r) {
+    const valueR = parseFloat(String(r));
+    if (valueR < 1 || valueR > 3) {
+        return <p className="error">r - выходит за допустимый диапазон</p>;
+    }
+    return false;
 }
