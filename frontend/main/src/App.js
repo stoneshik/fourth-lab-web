@@ -1,15 +1,21 @@
 import './App.css';
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Util from './utils';
 import { DotsManager, CanvasComponent} from './сanvas';
+import { MultiSelect } from 'primereact/multiselect';
 
 
 function App() {
   const canvas = <CanvasComponent/>;
 
   /* Обработка формы */
+  function setSelectedValue() {
+
+  }
   const {
     register,
     handleSubmit,
@@ -32,16 +38,7 @@ function App() {
           <form onSubmit={handleSubmit(onSubmit)} id="dot_form" className="ui-form">
             <h3>Проверка попадания точки</h3>
             <div className="form-row">
-              <input
-                  {...register("x", {
-                    required: true,
-                    maxLength: 9,
-                    pattern: /^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$/,
-                    min: -5,
-                    max: 3
-                  })}
-              />
-              <label className="text-input-label">X:</label>
+              <MultiSelect options={[-5, -4, -3, -2, -1, 0, 1, 2, 3]}/>
             </div>
             <div className="form-row">
               <input
