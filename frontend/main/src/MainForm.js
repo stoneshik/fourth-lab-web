@@ -12,7 +12,7 @@ export class MainForm extends Component {
             lazyLoading: false,
             selectedValuesX: [{name: '0', code: '0'}],
             valueY: 0,
-            selectedValuesR: [{name: '0', code: '0'}],
+            selectedValuesR: [{name: '1', code: '1'}],
             selectAll: false
         };
         this.valuesX = [
@@ -51,16 +51,16 @@ export class MainForm extends Component {
 
     validateForm() {
         const x = this.state.selectedValuesX;
-        const y = 0;
+        const y = this.state.valueY;
         const r = this.state.selectedValuesR;
-        if (Utils.outputErrorRequired(x, y, r) !== false) {
-            return false;
-        } else if (Utils.outputErrorMaxLength(x, y, r) !== false) {
-            return false;
-        } else if (Utils.outputErrorPattern(x, y, r) !== false) {
-            return false;
-        }
-        return true;
+        return !(
+            Utils.outputErrorRequired(x, y, r) !== false ||
+            Utils.outputErrorMaxLength(x, y, r) !== false ||
+            Utils.outputErrorPattern(x, y, r) !== false ||
+            Utils.outputErrorRange(x, y, r) !== false ||
+            Utils.outputErrorAmountSelect(x, r) !== false
+        );
+
     }
 
     valueSelectTemplate(option) {
@@ -110,9 +110,11 @@ export class MainForm extends Component {
                                  optionLabel="name" placeholder="Выбрать R"/>
                 </div>
                 <input type="submit"/>
-                {Utils.outputErrorRequired(this.state.selectedValuesX, 0, this.state.selectedValuesR)}
-                {Utils.outputErrorMaxLength(this.state.selectedValuesX, 0, this.state.selectedValuesR)}
-                {Utils.outputErrorPattern(this.state.selectedValuesX, 0, this.state.selectedValuesR)}
+                {Utils.outputErrorRequired(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {Utils.outputErrorMaxLength(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {Utils.outputErrorPattern(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {Utils.outputErrorRange(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
+                {Utils.outputErrorAmountSelect(this.state.selectedValuesX, this.state.selectedValuesR)}
             </form>
         )
     }

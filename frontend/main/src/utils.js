@@ -17,9 +17,7 @@ export function outputErrorMaxLength(x, y, r) {
     for (let i=0; i < x.length; i++) {
         if (String(x[i]['code']).length > 9) {resultX = false; break;}
     }
-    for (let i=0; i < y.length; i++) {
-        if (String(y[i]['code']).length > 9) {resultY = false; break;}
-    }
+    if (String(y).length > 9) {resultY = false;}
     for (let i=0; i < r.length; i++) {
         if (String(r[i]['code']).length > 9) {resultR = false; break;}
     }
@@ -40,9 +38,7 @@ export function outputErrorPattern(x, y, r) {
     for (let i=0; i < x.length; i++) {
         if (String(x[i]['code']).match(regex) == null) {resultX = false; break;}
     }
-    for (let i=0; i < y.length; i++) {
-        if (String(y[i]['code']).match(regex) == null) {resultY = false; break;}
-    }
+    if (String(y).match(regex) == null) {resultY = false;}
     for (let i=0; i < r.length; i++) {
         if (String(r[i]['code']).match(regex) == null) {resultR = false; break;}
     }
@@ -54,13 +50,35 @@ export function outputErrorPattern(x, y, r) {
     }
     return false;
 }
-export function outputErrorRange(xType, yType, rType) {
+export function outputErrorRange(x, y, r) {
     const errorLabels = [];
-    if (xType === "min" || yType === "min" || rType === "min" ||
-        xType === "max" || yType === "max" || rType === "max") {
-        if (xType === "min" || xType === "max") {errorLabels.push("x");}
-        if (yType === "min" || yType === "max") {errorLabels.push("y");}
-        if (rType === "min" || rType === "max") {errorLabels.push("r");}
+    const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
+    let resultX = true;
+    let resultY = true;
+    let resultR = true;
+    for (let i=0; i < x.length; i++) {
+        const valueX = parseFloat(String(x[i]['code']));
+        if (valueX < -5 || valueX > 3) {resultX = false; break;}
+    }
+    if (String(y).match(regex) == null) {
+        const valueY = parseFloat(String(y));
+        if (valueY < -5 || valueY > 3) {resultY = false;}
+    }
+    for (let i=0; i < r.length; i++) {
+        const valueR = parseFloat(String(r[i]['code']));
+        if (valueR < 1 || valueR > 3) {resultR = false; break;}
+    }
+    if (!resultX || !resultY || !resultR) {
+        if (!resultX) {errorLabels.push("x");}
+        if (!resultY) {errorLabels.push("y");}
+        if (!resultR) {errorLabels.push("r");}
         return <p className="error">{errorLabels.join(", ")} - выход за за границы</p>;
     }
+    return false;
+}
+export function outputErrorAmountSelect(x, r) {
+    if (x.length !== r.length) {
+        return <p className="error">x и r - должны иметь одинаковое количество выбранных элементов</p>;
+    }
+    return false;
 }
