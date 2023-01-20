@@ -87,10 +87,11 @@ export class Canvas {
 
         ctx.beginPath();
         ctx.moveTo(center.x, center.y);
-        ctx.arc(center.x, center.y, r.step.x, Math.PI, Math.PI + Math.PI / 2);
-        ctx.lineTo(center.x + r.step.x * 2, center.y);
-        ctx.lineTo(center.x + r.step.x * 2, center.y + r.step.y * 2);
-        ctx.lineTo(center.x, center.y + (r.step.y * 2));
+        ctx.arc(center.x, center.y, r.step.x * 2, Math.PI + Math.PI / 2, Math.PI * 2);
+        ctx.lineTo(center.x + r.step.x, center.y);
+        ctx.lineTo(center.x + r.step.x, center.y + r.step.y * 2);
+        ctx.lineTo(center.x, center.y + r.step.y * 2);
+        ctx.lineTo(center.x - (r.step.x * 2), center.y);
         ctx.lineTo(center.x, center.y);
 
         ctx.fillStyle = color;

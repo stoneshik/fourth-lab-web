@@ -3,7 +3,7 @@ import "primeicons/primeicons.css";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as Util from './utils';
-import { DotsManager, CanvasComponent, Canvas } from './Canvas';
+import { DotsManager, CanvasComponent} from './сanvas';
 
 
 function App() {
