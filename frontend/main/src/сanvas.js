@@ -1,7 +1,10 @@
 import React from "react";
 
 export class DotsManager {
-    dots = [];
+    constructor() {
+        this.dots = [];
+        this.r = null;
+    }
     // Работа с данными точек, считываемыми из таблицы результатов
     newDot(isHit, x, y, r) {
         return {isHit: isHit, x: x, y: y, r: r};
@@ -31,14 +34,24 @@ export class CanvasComponent extends React.Component {
         if (elementR === undefined || elementR == null) {
             return;
         }
-        const r = elementR.innerText.trim().split(',')[0];
+        let r = elementR.innerText.trim().split(',')[0];
         this.setState({valueR: r});
         if (!this.validateR(r)) {
             return;
         }
+        r = parseFloat(r);
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
+        const dotsManager = this.canvas.dotsManager;
+        if (dotsManager.r !== r) {
+            dotsManager.cleanDots();
+        }
+        dotsManager.r = r;
+        dotsManager.addDot(
+            dotsManager.newDot(true, xy['x'], xy['y'], r)
+        );
+        this.canvas.drawCanvas();
         console.log(r);
         console.log(xy)
         console.log(event);
