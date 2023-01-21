@@ -6,7 +6,7 @@ import React from "react";
 
 import { DotsManager, CanvasComponent } from './сanvas';
 import { MainForm } from './MainForm';
-
+import { TableResults } from './Results';
 
 function App() {
   const canvas = <CanvasComponent/>;
@@ -23,44 +23,7 @@ function App() {
         </div>
         <div id="right_col">
           <h2>Результаты проверки</h2>
-          <table id="results" className="results">
-            <thead>
-            <tr>
-              <th scope="col">Результат</th>
-              <th scope="col">x</th>
-              <th scope="col">y</th>
-              <th scope="col">r</th>
-              <th scope="col">Время отправки</th>
-              <th scope="col">Время обработки</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr className="success">
-              <td>Попала</td>
-              <td>0.6863</td>
-              <td>-0.1373</td>
-              <td>1.0</td>
-              <td>14:9:25</td>
-              <td>39.488 мкс</td>
-            </tr>
-            <tr className="success">
-              <td>Попала</td>
-              <td>-0.1765</td>
-              <td>0.402</td>
-              <td>1.0</td>
-              <td>14:9:26</td>
-              <td>47.086 мкс</td>
-            </tr>
-            <tr className="fail">
-              <td>Не попала</td>
-              <td>0.9608</td>
-              <td>0.5588</td>
-              <td>1.0</td>
-              <td>17:17:11</td>
-              <td>40.956 мкс</td>
-            </tr>
-            </tbody>
-          </table>
+          <TableResults/>
         </div>
       </div>
     </div>
