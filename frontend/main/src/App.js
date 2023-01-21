@@ -9,13 +9,11 @@ import { MainForm } from './MainForm';
 import { TableResults } from './Results';
 
 function App() {
-  const canvas = <CanvasComponent/>;
-
   return (
     <div className="App">
       <div id="wrapper" className="container">
         <div id="left_col">
-          {canvas}
+          <CanvasComponent/>
           <div id="canvas_error" className="error"></div>
         </div>
         <div id="center_col">

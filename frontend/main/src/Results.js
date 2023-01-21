@@ -38,9 +38,9 @@ class Result {
     renderTimeLead() {
         return (parseFloat(this.timeLead) * 0.001).toFixed(3) + ' мкс';
     }
-    renderResult() {
+    renderResult(key) {
         return (
-            <tr className={this.renderClassName()}>
+            <tr className={this.renderClassName()} key={key}>
                 <td>{this.renderIsHit()}</td>
                 <td>{this.renderX()}</td>
                 <td>{this.renderY()}</td>
@@ -113,9 +113,9 @@ export class TableResults extends Component {
     renderResults() {
         const results = this.state.results;
         return (<tbody>{
-            results.map(result => {
+            results.map((result, key) => {
                 return (
-                    result.renderResult()
+                    result.renderResult(key)
                 )
             })
         }</tbody>);
