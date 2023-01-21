@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "primereact/button";
 import { getParseTimeInString } from "./util";
 
 class Result {
@@ -82,11 +83,11 @@ class ResultsManager {
             )
         ];
     }
-    addResults() {
-
+    addResults(results) {
+        this.results.unshift(results);
     }
     cleanResults() {
-
+        this.results = [];
     }
 }
 
@@ -98,9 +99,16 @@ export class TableResults extends Component {
             results: this.resultsManager.results
         }
     }
+    updateResults() {
+        this.setState({results: this.resultsManager.results});
+    }
     componentDidMount() {
         this.resultsManager.loadResults();
-        this.setState({results: this.resultsManager.results});
+        this.updateResults();
+    }
+    clean() {
+        this.resultsManager.cleanResults();
+        this.updateResults();
     }
     renderResults() {
         const results = this.state.results;
@@ -124,19 +132,22 @@ export class TableResults extends Component {
             );
         }
         return (
-            <table id="results" className="results">
-                <thead>
-                <tr>
-                    <th scope="col">Результат</th>
-                    <th scope="col">x</th>
-                    <th scope="col">y</th>
-                    <th scope="col">r</th>
-                    <th scope="col">Время отправки</th>
-                    <th scope="col">Время обработки</th>
-                </tr>
-                </thead>
-                {this.renderResults()}
-            </table>
+            <div>
+                <table id="results" className="results">
+                    <thead>
+                    <tr>
+                        <th scope="col">Результат</th>
+                        <th scope="col">x</th>
+                        <th scope="col">y</th>
+                        <th scope="col">r</th>
+                        <th scope="col">Время отправки</th>
+                        <th scope="col">Время обработки</th>
+                    </tr>
+                    </thead>
+                    {this.renderResults()}
+                </table>
+                <Button id="clean_button" onClick={() => this.clean()}>Очистить</Button>
+            </div>
         );
     }
 }
