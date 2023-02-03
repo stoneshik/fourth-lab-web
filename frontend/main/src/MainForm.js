@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { Slider } from 'primereact/slider';
-import { Main } from './App.js';
+import { Main } from './MainApp.js';
 import { Result } from './Results'
 
 export class MainForm extends Component {

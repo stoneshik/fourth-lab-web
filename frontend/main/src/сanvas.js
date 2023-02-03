@@ -1,6 +1,6 @@
 import React from "react";
 import { Result } from './Results'
-import { Main } from './App';
+import { Main } from './MainApp';
 
 export class DotsManager {
     constructor() {

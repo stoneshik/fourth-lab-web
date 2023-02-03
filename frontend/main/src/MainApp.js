@@ -8,7 +8,7 @@ import { DotsManager, CanvasComponent } from './сanvas';
 import { MainForm } from './MainForm';
 import { TableResults } from './Results';
 
-function App() {
+function MainApp() {
   return (
     <div className="App">
       <div id="wrapper" className="container">
@@ -28,7 +28,7 @@ function App() {
   );
 }
 
-export default App;
+export default MainApp;
 
 export class Main {
   constructor() {

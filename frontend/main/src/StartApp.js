@@ -3,7 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 
-function App() {
+function StartApp() {
   const {
     register,
     handleSubmit,
@@ -51,7 +51,7 @@ function App() {
   );
 }
 
-export default App;
+export default StartApp;
 
 function outputErrorRequired(loginType, passwordType) {
   const errorLabels = [];
