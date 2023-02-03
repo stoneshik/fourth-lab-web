@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { Slider } from 'primereact/slider';
+import { Main } from './App.js';
+import { Result } from './Results'
 
 export class MainForm extends Component {
     constructor(props) {
         super(props);
+        this.tableResults = null;
         this.state = {
             lazyItems: [],
             lazyLoading: false,
@@ -41,10 +44,18 @@ export class MainForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        this.tableResults = Main.getInstance().tableResults;
+    }
+
     handleSubmit(event) {
         console.log(this.state);
         event.preventDefault();
         if (!this.validateForm()) {return false;}
+        Main.getInstance().tableResults.resultsManager.addResults(
+            new Result(true, this.state.selectedValuesX[0], this.state.valueY, this.state.selectedValuesR[0], '12:40:50', 1111)
+        );
+        Main.getInstance().tableResults.updateResults();
     }
 
     validateForm() {
@@ -199,3 +210,4 @@ function outputErrorAmountSelect(x, r) {
     }
     return false;
 }
+

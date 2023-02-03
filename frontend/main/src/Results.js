@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "primereact/button";
 import { getParseTimeInString } from "./util";
 
-class Result {
+export class Result {
     constructor(isHit, x, y, r, timeDispatch, timeLead) {
         this.isHit = isHit;
         this.x = x;
@@ -11,7 +11,7 @@ class Result {
         this.timeDispatch = timeDispatch;
         this.timeLead = timeLead;
     }
-    renderClassName(t) {
+    renderClassName() {
         if (this.isHit) {
             return "success";
         }
@@ -151,3 +151,4 @@ export class TableResults extends Component {
         );
     }
 }
+

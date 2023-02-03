@@ -21,7 +21,7 @@ function App() {
         </div>
         <div id="right_col">
           <h2>Результаты проверки</h2>
-          <TableResults/>
+          {new Main().tableResults.render()}
         </div>
       </div>
     </div>
@@ -29,3 +29,16 @@ function App() {
 }
 
 export default App;
+
+export class Main {
+  constructor() {
+    if (!Main._instance) {
+      this.tableResults = new TableResults();
+      Main._instance = this;
+    }
+    return Main._instance;
+  }
+  static getInstance() {
+    return this._instance;
+  }
+}

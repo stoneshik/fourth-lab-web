@@ -1,4 +1,6 @@
 import React from "react";
+import { Result } from './Results'
+import { Main } from './App';
 
 export class DotsManager {
     constructor() {
@@ -19,12 +21,16 @@ export class DotsManager {
 export class CanvasComponent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {valueR: 1};
+        this.tableResults = null;
+        this.state = {
+            valueR: 1
+        };
         this.canvas = new Canvas();
         this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
+        this.tableResults = Main.getInstance().tableResults;
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
     }
@@ -52,6 +58,9 @@ export class CanvasComponent extends React.Component {
             dotsManager.newDot(true, xy['x'], xy['y'], r)
         );
         this.canvas.drawCanvas();
+        Main.getInstance().tableResults.resultsManager.addResults(new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111));
+        Main.getInstance().tableResults.updateResults();
+        console.log(this.tableResults);
         console.log(r);
         console.log(xy)
         console.log(event);
