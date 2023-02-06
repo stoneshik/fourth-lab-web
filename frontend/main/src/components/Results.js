@@ -1,6 +1,8 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { Button } from "primereact/button";
-import { getParseTimeInString } from "./util";
+
+import { getParseTimeInString } from "../util";
+
 
 export class Result {
     constructor(isHit, x, y, r, timeDispatch, timeLead) {
