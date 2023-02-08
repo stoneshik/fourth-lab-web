@@ -2,13 +2,11 @@ import { Component } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { Slider } from "primereact/slider";
 
-import { Result } from "./Results";
-
 
 export class MainForm extends Component {
     constructor(props) {
         super(props);
-        this.tableResults = null;
+        //this.tableResults = null;
         this.state = {
             lazyItems: [],
             lazyLoading: false,

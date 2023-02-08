@@ -1,4 +1,4 @@
-import "./App.css";
+import "../App.css";
 import { useForm } from "react-hook-form";
 
 

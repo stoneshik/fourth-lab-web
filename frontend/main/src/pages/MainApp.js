@@ -1,9 +1,9 @@
-import "./App.css";
+import "../App.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-import { DotsManager, CanvasComponent } from "../components/Canvas";
+import { CanvasComponent } from "../components/Canvas";
 import { MainForm } from "../components/MainForm";
 import { TableResults } from "../components/Results";
 
