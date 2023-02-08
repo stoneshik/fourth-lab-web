@@ -2,7 +2,7 @@ import { Component } from "react";
 import { addResult } from '../redux/actions';
 import { connect } from 'react-redux';
 
-import { Canvas } from "../utils/Canvas"
+import { Canvas } from "../utils/Canvas";
 import { Result } from "./Results";
 
 export class CanvasComponent extends Component {
@@ -45,8 +45,13 @@ export class CanvasComponent extends Component {
             dotsManager.newDot(true, xy['x'], xy['y'], r)
         );
         this.canvas.drawCanvas();
-        console.log(this.props);
-        this.props.addResult(new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111));
+        //console.log(this.props.r_parameter);
+        const result = new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111);
+        const results = this.props.results;
+        this.props.addResult(
+            results,
+            result
+        );
         console.log(this.props);
         //Main.getInstance().tableResults.resultsManager.addResults(new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111));
         //Main.getInstance().tableResults.updateResults();
@@ -78,17 +83,6 @@ export class CanvasComponent extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        results: state.results
-    }
-}
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addResult: (result) => {dispatch(addResult(result))}
-    }
-}
-
 function outputErrorRequired(r) {
     if (r == null || r.length === 0) {
         return <p className="error">не выбрано r</p>;
@@ -116,4 +110,16 @@ function outputErrorRange(r) {
     return false;
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CanvasComponent)
+const mapStateToProps = (state) => {
+    return {
+        results: state.results,
+        //r_parameter: state.r_parameter
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addResult: (results, result) => {dispatch(addResult(results, result))}
+    }
+}
+
+export const CanvasContainer = connect(mapStateToProps, mapDispatchToProps)(CanvasComponent);

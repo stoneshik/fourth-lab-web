@@ -5,16 +5,25 @@ import {
 } from './action-types.js'
 
 //add cart action
-export const addResult = (result) => {
+export const addResult = (results, result) => {
+    results.push(result);
     return {
         type: ADD_RESULT,
-        result
+        results: results
     };
 }
 //remove item action
 export const clearResults = () => {
     return {
         type: CLEAR_RESULTS,
-        //true
+        clear_results: true
     };
 }
+
+export const passingRParameter = (r) => {
+    return {
+        type: PASSING_R_PARAMETER,
+        r_parameter: r
+    };
+}
+
