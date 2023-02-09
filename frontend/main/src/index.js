@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import StartApp from "./pages/StartApp";
-import MainApp from "./pages/MainApp";
+import StartPage from "./pages/StartPage";
+import MainPage from "./pages/MainPage";
 import store from "./redux/store";
 
 
@@ -12,11 +12,11 @@ const router = createBrowserRouter(
     [
         {
             path: "/",
-            element: <StartApp />
+            element: <StartPage />
         },
         {
             path: "/main",
-            element: <MainApp />
+            element: <MainPage />
         }
     ]
 );

@@ -8,7 +8,7 @@ import { MainFormContainer } from "../components/MainForm";
 import { TableResults } from "../components/Results";
 import store from "../redux/store";
 
-function MainApp() {
+function MainPage() {
   return (
     <div className="App">
       <div id="wrapper" className="container">
@@ -28,4 +28,4 @@ function MainApp() {
   );
 }
 
-export default MainApp;
+export default MainPage;

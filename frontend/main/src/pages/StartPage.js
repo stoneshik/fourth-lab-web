@@ -2,7 +2,7 @@ import "../App.css";
 import { useForm } from "react-hook-form";
 
 
-function StartApp() {
+function StartPage() {
   const {
     register,
     handleSubmit,
@@ -50,7 +50,7 @@ function StartApp() {
   );
 }
 
-export default StartApp;
+export default StartPage;
 
 function outputErrorRequired(loginType, passwordType) {
   const errorLabels = [];
