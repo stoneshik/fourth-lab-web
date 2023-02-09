@@ -123,7 +123,6 @@ export class TableResults extends Component {
         }</tbody>);
     }
     render() {
-        console.log('rr');
         if (this.state.results == null || this.state.results.length === 0) {
             return (
                 <table id="results" className="results">

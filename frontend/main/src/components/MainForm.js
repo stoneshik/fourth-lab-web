@@ -10,9 +10,9 @@ import { actionPassingR } from "../redux/actions";
 class MainForm extends Component {
     constructor(props) {
         super(props);
-        //this.tableResults = null;
         this.state = {
             lazyItems: [],
+            errorMessage: '',
             lazyLoading: false,
             selectedValuesX: [{name: '0', code: '0'}],
             valueY: 0,
@@ -46,24 +46,25 @@ class MainForm extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(event) {
-        console.log(this.state);
         event.preventDefault();
-        if (!this.validateForm()) {return false;}
-        //Main.getInstance().tableResults.resultsManager.addResults(
-        //    new Result(true, this.state.selectedValuesX[0], this.state.valueY, this.state.selectedValuesR[0], '12:40:50', 1111)
-        //);
-        //Main.getInstance().tableResults.updateResults();
+        const errorMessage = this.validateForm();
+        if (errorMessage !== false) {
+            this.setState({errorMessage: errorMessage});
+            return false;
+        }
+        this.setState({errorMessage: ''});
+
     }
     validateForm() {
         const x = this.state.selectedValuesX;
         const y = this.state.valueY;
         const r = this.state.selectedValuesR;
-        return !(
-            outputErrorRequired(x, y, r) !== false ||
-            outputErrorMaxLength(x, y, r) !== false ||
-            outputErrorPattern(x, y, r) !== false ||
-            outputErrorRange(x, y, r) !== false ||
-            outputErrorAmountSelect(x, r) !== false
+        return (
+            outputErrorRequired(x, y, r) ||
+            outputErrorMaxLength(x, y, r) ||
+            outputErrorPattern(x, y, r) ||
+            outputErrorRange(x, y, r) ||
+            outputErrorAmountSelect(x, r)
         );
     }
     valueSelectTemplate(option) {
@@ -125,11 +126,7 @@ class MainForm extends Component {
                         optionLabel="name" placeholder="Выбрать R" id="r"/>
                 </div>
                 <input type="submit"/>
-                {outputErrorRequired(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {outputErrorMaxLength(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {outputErrorPattern(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {outputErrorRange(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
-                {outputErrorAmountSelect(this.state.selectedValuesX, this.state.selectedValuesR)}
+                {this.state.errorMessage}
             </form>
         )
     }
@@ -211,8 +208,8 @@ function outputErrorRange(x, y, r) {
     return false;
 }
 function outputErrorAmountSelect(x, r) {
-    if (x.length !== r.length) {
-        return <p className="error">x и r - должны иметь одинаковое количество выбранных элементов</p>;
+    if (x.length > 1 && r.length > 1 && x.length !== r.length) {
+        return <p className="error">x и r - должны иметь одинаковое количество выбранных элементов, либо для одного из этих параметров должен быть выбран один элемент</p>;
     }
     return false;
 }
@@ -222,7 +219,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return { passingR: bindActionCreators(actionPassingR, dispatch) };
-        //passingRParameter: (r) => {dispatch(passingRParameter(r))}
 }
 
 export const MainFormContainer = connect(mapStateToProps, mapDispatchToProps)(MainForm);
