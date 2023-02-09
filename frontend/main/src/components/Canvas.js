@@ -1,11 +1,13 @@
 import { Component } from "react";
-import { addResult } from '../redux/actions';
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import { Canvas } from "../utils/Canvas";
 import { Result } from "./Results";
+import { actionAddResult } from "../redux/actions";
+import { Canvas } from "../utils/Canvas";
 
-export class CanvasComponent extends Component {
+
+class CanvasComponent extends Component {
     constructor(props) {
         super(props);
         //this.tableResults = null;
@@ -15,19 +17,34 @@ export class CanvasComponent extends Component {
         this.canvas = new Canvas();
         this.handleClick = this.handleClick.bind(this);
     }
-
     componentDidMount() {
         //this.tableResults = Main.getInstance().tableResults;
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
     }
-
+    addDot(x, y, r) {
+        const dotsManager = this.canvas.dotsManager;
+        if (dotsManager.r !== r) {
+            dotsManager.cleanDots();
+        }
+        dotsManager.r = r;
+        dotsManager.addDot(
+            dotsManager.newDot(true, x, y, r)
+        );
+        this.props.addResult(
+            this.props.results,
+            r,
+            new Result(true, x, y, r, '12:40:50', 1111)
+        );
+    }
     handleClick(event) {
-        const elementR = document.querySelector('#r .p-multiselect-label');
+        //const elementR = document.querySelector('#r .p-multiselect-label');
+        const elementR = this.props.r.code;
         if (elementR === undefined || elementR == null) {
             return;
         }
-        let r = elementR.innerText.trim().split(',')[0];
+        //let r = elementR.innerText.trim().split(',')[0];
+        let r = String(elementR).trim().split(',')[0];
         this.setState({valueR: r});
         if (!this.validateR(r)) {
             return;
@@ -36,7 +53,7 @@ export class CanvasComponent extends Component {
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
-        const dotsManager = this.canvas.dotsManager;
+        /*const dotsManager = this.canvas.dotsManager;
         if (dotsManager.r !== r) {
             dotsManager.cleanDots();
         }
@@ -44,14 +61,13 @@ export class CanvasComponent extends Component {
         dotsManager.addDot(
             dotsManager.newDot(true, xy['x'], xy['y'], r)
         );
-        this.canvas.drawCanvas();
+        //this.canvas.drawCanvas();
         //console.log(this.props.r_parameter);
-        const result = new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111);
-        const results = this.props.results;
         this.props.addResult(
-            results,
-            result
-        );
+            new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111),
+            this.props.results
+        );*/
+        this.addDot(xy['x'], xy['y'], r);
         console.log(this.props);
         //Main.getInstance().tableResults.resultsManager.addResults(new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111));
         //Main.getInstance().tableResults.updateResults();
@@ -59,8 +75,8 @@ export class CanvasComponent extends Component {
         console.log(r);
         console.log(xy)
         console.log(event);
+        this.canvas.drawCanvas();
     }
-
     validateR(r) {
         return !(
             outputErrorRequired(r) !== false ||
@@ -69,7 +85,6 @@ export class CanvasComponent extends Component {
             outputErrorRange(r) !== false
         );
     }
-
     render() {
         return (
             <div>
@@ -111,15 +126,12 @@ function outputErrorRange(r) {
 }
 
 const mapStateToProps = (state) => {
-    return {
-        results: state.results,
-        //r_parameter: state.r_parameter
-    }
+    return { results: state.results, r: state.r };
 }
 const mapDispatchToProps = (dispatch) => {
-    return {
-        addResult: (results, result) => {dispatch(addResult(results, result))}
-    }
+    return { addResult: bindActionCreators(actionAddResult, dispatch) };
+        //addResult: (results, r, result) => {dispatch(addResult(results, r, result))}
+    //};
 }
 
 export const CanvasContainer = connect(mapStateToProps, mapDispatchToProps)(CanvasComponent);

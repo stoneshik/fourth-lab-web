@@ -1,9 +1,13 @@
-import { Component } from "react";
 import { MultiSelect } from "primereact/multiselect";
 import { Slider } from "primereact/slider";
+import { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+import { actionPassingR } from "../redux/actions";
 
 
-export class MainForm extends Component {
+class MainForm extends Component {
     constructor(props) {
         super(props);
         //this.tableResults = null;
@@ -39,10 +43,8 @@ export class MainForm extends Component {
         ];
         this.valueSelectTemplate = this.valueSelectTemplate.bind(this);
         this.selectedValueSelectTemplate = this.selectedValueSelectTemplate.bind(this);
-
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
     handleSubmit(event) {
         console.log(this.state);
         event.preventDefault();
@@ -52,7 +54,6 @@ export class MainForm extends Component {
         //);
         //Main.getInstance().tableResults.updateResults();
     }
-
     validateForm() {
         const x = this.state.selectedValuesX;
         const y = this.state.valueY;
@@ -65,7 +66,6 @@ export class MainForm extends Component {
             outputErrorAmountSelect(x, r) !== false
         );
     }
-
     valueSelectTemplate(option) {
         return (
             <div className="country-item">
@@ -83,35 +83,37 @@ export class MainForm extends Component {
                 </div>
             );
         }
-
         return "Выбор значения";
     }
-
     render() {
         return (
             <form onSubmit={this.handleSubmit} id="dot_form" className="ui-form">
                 <h3>Проверка попадания точки</h3>
                 <div className="form-row">
                     <label className="text-input-label">Значение X:</label>
-                    <MultiSelect value={this.state.selectedValuesX}
-                                 options={this.valuesX}
-                                 onChange={(e) =>
-                                     this.setState({ selectedValuesX: e.value })}
-                                 optionLabel="name" placeholder="Выбрать X" id="x"/>
+                    <MultiSelect
+                        value={this.state.selectedValuesX}
+                        options={this.valuesX}
+                        onChange={(e) => this.setState({ selectedValuesX: e.value })}
+                        optionLabel="name" placeholder="Выбрать X" id="x"/>
                 </div>
                 <div className="form-row">
                     <label className="text-input-label">Значение Y: {this.state.valueY}</label>
-                    <Slider value={this.state.valueY} min={-5} max={5}
-                            onChange={(e) => this.setState({ valueY: e.value })}
-                            id="y"/>
+                    <Slider
+                        value={this.state.valueY} min={-5} max={5}
+                        onChange={(e) => this.setState({ valueY: e.value })}
+                        id="y"/>
                 </div>
                 <div className="form-row">
                     <label className="text-input-label">Значение R:</label>
-                    <MultiSelect value={this.state.selectedValuesR}
-                                 options={this.valuesR}
-                                 onChange={(e) =>
-                                     this.setState({ selectedValuesR: e.value })}
-                                 optionLabel="name" placeholder="Выбрать R" id="r"/>
+                    <MultiSelect
+                        value={this.state.selectedValuesR}
+                        options={this.valuesR}
+                        onChange={(e) => {
+                            this.setState({ selectedValuesR: e.value });
+                            this.props.passingR(e.value);
+                        }}
+                        optionLabel="name" placeholder="Выбрать R" id="r"/>
                 </div>
                 <input type="submit"/>
                 {outputErrorRequired(this.state.selectedValuesX, this.state.valueY, this.state.selectedValuesR)}
@@ -205,4 +207,14 @@ function outputErrorAmountSelect(x, r) {
     }
     return false;
 }
+
+const mapStateToProps = (state) => {
+    return { r: state.r };
+}
+const mapDispatchToProps = (dispatch) => {
+    return { passingR: bindActionCreators(actionPassingR, dispatch) };
+        //passingRParameter: (r) => {dispatch(passingRParameter(r))}
+}
+
+export const MainFormContainer = connect(mapStateToProps, mapDispatchToProps)(MainForm);
 

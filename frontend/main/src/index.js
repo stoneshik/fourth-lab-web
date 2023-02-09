@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Provider } from 'react-redux';
 
-import StartApp from './pages/StartApp';
-import MainApp from './pages/MainApp';
-
+import StartApp from "./pages/StartApp";
+import MainApp from "./pages/MainApp";
 import store from "./redux/store";
 
 

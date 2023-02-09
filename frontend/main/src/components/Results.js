@@ -1,7 +1,7 @@
-import { Component } from "react";
 import { Button } from "primereact/button";
+import { Component } from "react";
 
-import { getParseTimeInString } from "../util";
+import { getParseTimeInString } from "../utils/util";
 
 
 export class Result {
