@@ -37,7 +37,7 @@ class CanvasComponent extends Component {
         this.props.addResult(
             this.props.results,
             [r],
-            new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)
+            [new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)]
         );
     }
     validateR(rValues) {

@@ -3,7 +3,7 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { actionClearResults } from "../redux/actions";
+import {actionAddResult, actionClearResults} from "../redux/actions";
 import { getParseTimeInString } from "../utils/util";
 
 
@@ -62,8 +62,9 @@ export class TableResultsComponent extends Component {
         this.loadResults();
     }
     loadResults() {
-        this.clean();
-        this.props.results.push([
+        console.log('eeeee');
+        //this.clean();
+        this.props.addResult(this.props.results, this.props.r, [
             new Result(
                 true,
                 0.6863,
@@ -139,7 +140,10 @@ const mapStateToProps = (state) => {
     return { results: state.results, r: state.r };
 }
 const mapDispatchToProps = (dispatch) => {
-    return { clearResults: bindActionCreators(actionClearResults, dispatch) };
+    return {
+        addResult: bindActionCreators(actionAddResult, dispatch),
+        clearResults: bindActionCreators(actionClearResults, dispatch)
+    };
 }
 
 export const TableResultsContainer = connect(mapStateToProps, mapDispatchToProps)(TableResultsComponent);

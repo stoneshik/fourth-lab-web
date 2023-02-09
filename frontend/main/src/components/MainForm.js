@@ -111,7 +111,7 @@ class MainForm extends Component {
                 this.props.addResult(
                     this.props.results,
                     [r],
-                    new Result(true, x, y, r, '12:40:50', 1111)
+                    [new Result(true, x, y, r, '12:40:50', 1111)]
                 );
             }
             return;
@@ -127,7 +127,7 @@ class MainForm extends Component {
                 this.props.addResult(
                     this.props.results,
                     rValues,
-                    new Result(true, x, y, r, '12:40:50', 1111)
+                    [new Result(true, x, y, r, '12:40:50', 1111)]
                 );
             }
             return;
@@ -137,7 +137,7 @@ class MainForm extends Component {
         this.props.addResult(
             this.props.results,
             [r],
-            new Result(true, x, y, r, '12:40:50', 1111)
+            [new Result(true, x, y, r, '12:40:50', 1111)]
         );
     }
     render() {
