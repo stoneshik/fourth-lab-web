@@ -1,6 +1,5 @@
 const initialState = {
     results: [],
-    clear_results: false,
     r: [1.0],
 };
 

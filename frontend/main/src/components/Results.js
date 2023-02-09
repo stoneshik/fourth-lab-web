@@ -1,6 +1,9 @@
 import { Button } from "primereact/button";
 import { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
+import { actionClearResults } from "../redux/actions";
 import { getParseTimeInString } from "../utils/util";
 
 
@@ -53,12 +56,14 @@ export class Result {
         );
     }
 }
-class ResultsManager {
-    constructor() {
-        this.results = [];
+
+export class TableResultsComponent extends Component {
+    componentDidMount() {
+        this.loadResults();
     }
     loadResults() {
-        this.results = [
+        this.clean();
+        this.props.results.push([
             new Result(
                 true,
                 0.6863,
@@ -83,47 +88,24 @@ class ResultsManager {
                 '17:17:11',
                 40956
             )
-        ];
-    }
-    addResults(results) {
-        this.results.unshift(results);
-    }
-    cleanResults() {
-        this.results = [];
-    }
-}
-
-export class TableResults extends Component {
-    constructor(props) {
-        super(props);
-        this.resultsManager = new ResultsManager();
-        this.state = {
-            results: this.resultsManager.results
-        }
-    }
-    updateResults() {
-        this.setState({results: this.resultsManager.results});
-    }
-    componentDidMount() {
-        this.resultsManager.loadResults();
-        this.updateResults();
+        ]);
     }
     clean() {
-        this.resultsManager.cleanResults();
-        this.updateResults();
+        this.props.clearResults(this.props.results, this.props.r);
     }
-    renderResults() {
-        const results = this.state.results;
-        return (<tbody>{
-            results.map((result, key) => {
-                return (
-                    result.renderResult(key)
+    renderResults(results) {
+        return (
+            <tbody>
+            {
+                results.map(
+                    (result, key) => { return (result.renderResult(key)) }
                 )
-            })
-        }</tbody>);
+            }
+            </tbody>
+        );
     }
     render() {
-        if (this.state.results == null || this.state.results.length === 0) {
+        if (this.props.results == null || this.props.results.length === 0) {
             return (
                 <table id="results" className="results">
                     <tbody>
@@ -145,7 +127,7 @@ export class TableResults extends Component {
                         <th scope="col">Время обработки</th>
                     </tr>
                     </thead>
-                    {this.renderResults()}
+                    {this.renderResults(this.props.results)}
                 </table>
                 <Button id="clean_button" onClick={() => this.clean()}>Очистить</Button>
             </div>
@@ -153,3 +135,11 @@ export class TableResults extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return { results: state.results, r: state.r };
+}
+const mapDispatchToProps = (dispatch) => {
+    return { clearResults: bindActionCreators(actionClearResults, dispatch) };
+}
+
+export const TableResultsContainer = connect(mapStateToProps, mapDispatchToProps)(TableResultsComponent);

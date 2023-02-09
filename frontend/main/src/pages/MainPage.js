@@ -5,7 +5,7 @@ import "primereact/resources/primereact.min.css";
 
 import { CanvasContainer } from "../components/Canvas";
 import { MainFormContainer } from "../components/MainForm";
-import { TableResults } from "../components/Results";
+import { TableResultsContainer } from "../components/Results";
 import store from "../redux/store";
 
 function MainPage() {
@@ -21,7 +21,7 @@ function MainPage() {
         </div>
         <div id="right_col">
           <h2>Результаты проверки</h2>
-          <TableResults/>
+          <TableResultsContainer store={store}/>
         </div>
       </div>
     </div>
