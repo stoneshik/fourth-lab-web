@@ -39,7 +39,7 @@ class CanvasComponent extends Component {
     }
     handleClick(event) {
         //const elementR = document.querySelector('#r .p-multiselect-label');
-        const elementR = this.props.r.code;
+        const elementR = this.props.r[0];
         if (elementR === undefined || elementR == null) {
             return;
         }

@@ -85,6 +85,18 @@ class MainForm extends Component {
         }
         return "Выбор значения";
     }
+    handlingPassingR(e) {
+        this.setState({ selectedValuesR: e.value });
+        if (e.value.length === undefined || e.value.length == null) {
+            this.props.passingR([e.value.code]);
+            return;
+        }
+        const result = [];
+        for (let i=0; i < e.value.length; i++) {
+            result[i] = e.value[i].code;
+        }
+        this.props.passingR(result);
+    }
     render() {
         return (
             <form onSubmit={this.handleSubmit} id="dot_form" className="ui-form">
@@ -109,10 +121,7 @@ class MainForm extends Component {
                     <MultiSelect
                         value={this.state.selectedValuesR}
                         options={this.valuesR}
-                        onChange={(e) => {
-                            this.setState({ selectedValuesR: e.value });
-                            this.props.passingR(e.value);
-                        }}
+                        onChange={(e) => this.handlingPassingR(e)}
                         optionLabel="name" placeholder="Выбрать R" id="r"/>
                 </div>
                 <input type="submit"/>
