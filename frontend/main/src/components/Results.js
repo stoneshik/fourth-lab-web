@@ -64,6 +64,9 @@ export class TableResultsComponent extends Component {
     loadResults() {
         console.log('eeeee');
         //this.clean();
+        if (this.props.results.length > 0) {
+            return;
+        }
         this.props.addResult(this.props.results, this.props.r, [
             new Result(
                 true,
@@ -99,7 +102,7 @@ export class TableResultsComponent extends Component {
             <tbody>
             {
                 results.map(
-                    (result, key) => { return (result.renderResult(key)) }
+                    (result, key) => { return (result.renderResult(key)); }
                 )
             }
             </tbody>

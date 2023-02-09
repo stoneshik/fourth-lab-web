@@ -17,6 +17,7 @@ class CanvasComponent extends Component {
     componentDidMount() {
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
+        this.updateCanvas(this.props.results);
     }
     handleClick(event) {
         const rValues = this.props.r;
@@ -60,6 +61,7 @@ class CanvasComponent extends Component {
         if (results === undefined || results.length === undefined || results.length === 0) {
             return;
         }
+        console.log('1111');
         const dotsManager = this.canvas.dotsManager;
         dotsManager.cleanDots();
         dotsManager.r = results[0].r;
