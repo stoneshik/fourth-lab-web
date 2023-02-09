@@ -4,8 +4,8 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import {actionAddResult, actionPassingR} from "../redux/actions";
-import {Result} from "./Results";
+import { actionAddResult, actionPassingR } from "../redux/actions";
+import { Result } from "./Results";
 
 
 class MainForm extends Component {
@@ -54,15 +54,7 @@ class MainForm extends Component {
             return false;
         }
         this.setState({errorMessage: ''});
-        const x = parseFloat(this.state.selectedValuesX[0].code);
-        const y = parseFloat(this.state.valueY);
-        const r = parseFloat(this.state.selectedValuesR[0].code);
-        console.log('rrrrrrrrrrrrr');
-        this.props.addResult(
-            this.props.results,
-            [r],
-            new Result(true, x, y, r, '12:40:50', 1111)
-        );
+        this.addResults();
     }
     handlingPassingR(e) {
         this.setState({ selectedValuesR: e.value });
@@ -106,6 +98,47 @@ class MainForm extends Component {
             );
         }
         return "Выбор значения";
+    }
+    addResults() {
+        const xValues = this.state.selectedValuesX;
+        const y = parseFloat(this.state.valueY);
+        const rValues = this.state.selectedValuesR;
+        if (xValues.length > 1) {
+            const r = parseFloat(rValues[0].code);
+            let x;
+            for (let i = xValues.length - 1; i >= 0; i--) {
+                x = parseFloat(xValues[i].code);
+                this.props.addResult(
+                    this.props.results,
+                    [r],
+                    new Result(true, x, y, r, '12:40:50', 1111)
+                );
+            }
+            return;
+        }
+        if (rValues.length > 1) {
+            const x = parseFloat(xValues[0].code);
+            rValues.forEach(
+                r => parseFloat(r.code)
+            );
+            let r;
+            for (let i = xValues.length - 1; i >= 0; i--) {
+                r = rValues[i].code;
+                this.props.addResult(
+                    this.props.results,
+                    rValues,
+                    new Result(true, x, y, r, '12:40:50', 1111)
+                );
+            }
+            return;
+        }
+        const x = parseFloat(xValues[0].code);
+        const r = parseFloat(rValues[0].code);
+        this.props.addResult(
+            this.props.results,
+            [r],
+            new Result(true, x, y, r, '12:40:50', 1111)
+        );
     }
     render() {
         return (

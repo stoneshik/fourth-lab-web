@@ -34,7 +34,11 @@ class CanvasComponent extends Component {
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
-        this.addDot(xy['x'], xy['y'], r);
+        this.props.addResult(
+            this.props.results,
+            [r],
+            new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)
+        );
     }
     validateR(rValues) {
         const errorRequired = outputErrorRequired(rValues);
@@ -50,13 +54,6 @@ class CanvasComponent extends Component {
             outputErrorMaxLength(r) ||
             outputErrorPattern(r) ||
             outputErrorRange(r)
-        );
-    }
-    addDot(x, y, r) {
-        this.props.addResult(
-            this.props.results,
-            [r],
-            new Result(true, x, y, r, '12:40:50', 1111)
         );
     }
     updateCanvas(results) {
