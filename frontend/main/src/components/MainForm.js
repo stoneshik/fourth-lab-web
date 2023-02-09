@@ -4,7 +4,8 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { actionPassingR } from "../redux/actions";
+import {actionAddResult, actionPassingR} from "../redux/actions";
+import {Result} from "./Results";
 
 
 class MainForm extends Component {
@@ -43,9 +44,9 @@ class MainForm extends Component {
         ];
         this.valueSelectTemplate = this.valueSelectTemplate.bind(this);
         this.selectedValueSelectTemplate = this.selectedValueSelectTemplate.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handlingSubmit = this.handlingSubmit.bind(this);
     }
-    handleSubmit(event) {
+    handlingSubmit(event) {
         event.preventDefault();
         const errorMessage = this.validateForm();
         if (errorMessage !== false) {
@@ -53,7 +54,27 @@ class MainForm extends Component {
             return false;
         }
         this.setState({errorMessage: ''});
-
+        const x = parseFloat(this.state.selectedValuesX[0].code);
+        const y = parseFloat(this.state.valueY);
+        const r = parseFloat(this.state.selectedValuesR[0].code);
+        console.log('rrrrrrrrrrrrr');
+        this.props.addResult(
+            this.props.results,
+            [r],
+            new Result(true, x, y, r, '12:40:50', 1111)
+        );
+    }
+    handlingPassingR(e) {
+        this.setState({ selectedValuesR: e.value });
+        if (e.value.length === undefined || e.value.length == null) {
+            this.props.passingR([e.value.code]);
+            return;
+        }
+        const rValues = [];
+        for (let i=0; i < e.value.length; i++) {
+            rValues[i] = e.value[i].code;
+        }
+        this.props.passingR(this.props.results, rValues);
     }
     validateForm() {
         const x = this.state.selectedValuesX;
@@ -86,21 +107,9 @@ class MainForm extends Component {
         }
         return "Выбор значения";
     }
-    handlingPassingR(e) {
-        this.setState({ selectedValuesR: e.value });
-        if (e.value.length === undefined || e.value.length == null) {
-            this.props.passingR([e.value.code]);
-            return;
-        }
-        const result = [];
-        for (let i=0; i < e.value.length; i++) {
-            result[i] = e.value[i].code;
-        }
-        this.props.passingR(result);
-    }
     render() {
         return (
-            <form onSubmit={this.handleSubmit} id="dot_form" className="ui-form">
+            <form onSubmit={this.handlingSubmit} id="dot_form" className="ui-form">
                 <h3>Проверка попадания точки</h3>
                 <div className="form-row">
                     <label className="text-input-label">Значение X:</label>
@@ -215,10 +224,13 @@ function outputErrorAmountSelect(x, r) {
 }
 
 const mapStateToProps = (state) => {
-    return { r: state.r };
+    return { results: state.results, r: state.r };
 }
 const mapDispatchToProps = (dispatch) => {
-    return { passingR: bindActionCreators(actionPassingR, dispatch) };
+    return {
+        addResult: bindActionCreators(actionAddResult, dispatch),
+        passingR: bindActionCreators(actionPassingR, dispatch)
+    };
 }
 
 export const MainFormContainer = connect(mapStateToProps, mapDispatchToProps)(MainForm);

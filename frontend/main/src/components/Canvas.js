@@ -55,12 +55,12 @@ class CanvasComponent extends Component {
     addDot(x, y, r) {
         this.props.addResult(
             this.props.results,
-            r,
+            [r],
             new Result(true, x, y, r, '12:40:50', 1111)
         );
     }
     updateCanvas(results) {
-        if (results.length === undefined || results.length === 0) {
+        if (results === undefined || results.length === undefined || results.length === 0) {
             return;
         }
         const dotsManager = this.canvas.dotsManager;
