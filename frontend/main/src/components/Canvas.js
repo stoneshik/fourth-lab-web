@@ -10,15 +10,11 @@ import { Canvas } from "../utils/Canvas";
 class CanvasComponent extends Component {
     constructor(props) {
         super(props);
-        //this.tableResults = null;
-        this.state = {
-            valueR: 1
-        };
+        this.state = { errorMessage: '' };
         this.canvas = new Canvas();
         this.handleClick = this.handleClick.bind(this);
     }
     componentDidMount() {
-        //this.tableResults = Main.getInstance().tableResults;
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
     }
@@ -38,89 +34,80 @@ class CanvasComponent extends Component {
         );
     }
     handleClick(event) {
-        //const elementR = document.querySelector('#r .p-multiselect-label');
-        const elementR = this.props.r[0];
-        if (elementR === undefined || elementR == null) {
+        const rValues = this.props.r;
+        if (rValues === undefined || rValues == null) {
             return;
         }
-        //let r = elementR.innerText.trim().split(',')[0];
-        let r = String(elementR).trim().split(',')[0];
+        const errorMessage = this.validateR(rValues);
+        if (errorMessage !== false) {
+            this.setState({errorMessage: errorMessage});
+            return;
+        }
+        this.setState({errorMessage: ''});
+        let r = String(rValues[0]).trim();
         this.setState({valueR: r});
-        if (!this.validateR(r)) {
-            return;
-        }
         r = parseFloat(r);
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
-        /*const dotsManager = this.canvas.dotsManager;
-        if (dotsManager.r !== r) {
-            dotsManager.cleanDots();
-        }
-        dotsManager.r = r;
-        dotsManager.addDot(
-            dotsManager.newDot(true, xy['x'], xy['y'], r)
-        );
-        //this.canvas.drawCanvas();
-        //console.log(this.props.r_parameter);
-        this.props.addResult(
-            new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111),
-            this.props.results
-        );*/
         this.addDot(xy['x'], xy['y'], r);
-        console.log(this.props);
-        //Main.getInstance().tableResults.resultsManager.addResults(new Result(true, xy['x'], xy['y'], r, '12:40:50', 1111));
-        //Main.getInstance().tableResults.updateResults();
-        //console.log(this.tableResults);
-        console.log(r);
-        console.log(xy)
-        console.log(event);
         this.canvas.drawCanvas();
     }
-    validateR(r) {
-        return !(
-            outputErrorRequired(r) !== false ||
-            outputErrorMaxLength(r) !== false ||
-            outputErrorPattern(r) !== false ||
-            outputErrorRange(r) !== false
+    validateR(rValues) {
+        const errorRequired = outputErrorRequired(rValues);
+        if (errorRequired !== false) {
+            return errorRequired;
+        }
+        const errorSelected = outputErrorSelected(rValues);
+        if (errorSelected !== false) {
+            return errorSelected;
+        }
+        const r = rValues[0];
+        return (
+            outputErrorMaxLength(r) ||
+            outputErrorPattern(r) ||
+            outputErrorRange(r)
         );
     }
     render() {
         return (
             <div>
                 <canvas id="canvas" height="600" width="600" onClick={(e) => this.handleClick(e)}></canvas>
-                {outputErrorRequired(this.state.valueR)}
-                {outputErrorMaxLength(this.state.valueR)}
-                {outputErrorPattern(this.state.valueR)}
-                {outputErrorRange(this.state.valueR)}
+                {this.state.errorMessage}
             </div>
         );
     }
 }
 
-function outputErrorRequired(r) {
-    if (r == null || r.length === 0) {
-        return <p className="error">не выбрано r</p>;
+function outputErrorRequired(rValues) {
+    if (rValues == null ||rValues.length === undefined || rValues.length === 0) {
+        return <p className="error">Не выбрано r</p>;
     }
     return false;
 }
-function outputErrorMaxLength(r) {
-    if (String(r).length > 9) {
-        return <p className="error">r - превышена длина ввода</p>;
+function outputErrorSelected(rValues) {
+    if (rValues.length > 1) {
+        return <p className="error">Выбрано более одного значения r</p>;
     }
     return false;
 }
-function outputErrorPattern(r) {
+function outputErrorMaxLength(rValues) {
+    if (String(rValues).length > 9) {
+        return <p className="error">Превышена длина ввода r</p>;
+    }
+    return false;
+}
+function outputErrorPattern(rValues) {
     const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
-    if (String(r).match(regex) == null) {
-        return <p className="error">r - неправильный формат ввода</p>;
+    if (String(rValues).match(regex) == null) {
+        return <p className="error">Неправильный формат ввода r</p>;
     }
     return false;
 }
-function outputErrorRange(r) {
-    const valueR = parseFloat(String(r));
+function outputErrorRange(rValues) {
+    const valueR = parseFloat(String(rValues));
     if (valueR < 1 || valueR > 3) {
-        return <p className="error">r - выходит за допустимый диапазон</p>;
+        return <p className="error">r выходит за допустимый диапазон</p>;
     }
     return false;
 }
@@ -130,8 +117,6 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return { addResult: bindActionCreators(actionAddResult, dispatch) };
-        //addResult: (results, r, result) => {dispatch(addResult(results, r, result))}
-    //};
 }
 
 export const CanvasContainer = connect(mapStateToProps, mapDispatchToProps)(CanvasComponent);
