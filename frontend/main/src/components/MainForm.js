@@ -103,10 +103,27 @@ class MainForm extends Component {
         const xValues = this.state.selectedValuesX;
         const y = parseFloat(this.state.valueY);
         const rValues = this.state.selectedValuesR;
+        if (xValues.length > 1 && rValues.length > 1) {
+            xValues.forEach( (x) => parseFloat(x.code) );
+            rValues.forEach( (r) => parseFloat(r.code) );
+            let x, r;
+            for (let i=0; i < rValues.length; i++) {
+                for (let j=0; j < xValues.length; j++) {
+                    x = xValues[j].code;
+                    r = rValues[i].code;
+                    this.props.addResult(
+                        this.props.results,
+                        rValues,
+                        [new Result(true, x, y, r, '12:40:50', 1111)]
+                    );
+                }
+            }
+            return;
+        }
         if (xValues.length > 1) {
             const r = parseFloat(rValues[0].code);
             let x;
-            for (let i = xValues.length - 1; i >= 0; i--) {
+            for (let i=0; i < xValues.length; i++) {
                 x = parseFloat(xValues[i].code);
                 this.props.addResult(
                     this.props.results,
@@ -118,11 +135,9 @@ class MainForm extends Component {
         }
         if (rValues.length > 1) {
             const x = parseFloat(xValues[0].code);
-            rValues.forEach(
-                r => parseFloat(r.code)
-            );
+            rValues.forEach( (r) => parseFloat(r.code) );
             let r;
-            for (let i = xValues.length - 1; i >= 0; i--) {
+            for (let i=0; i < rValues.length; i++) {
                 r = rValues[i].code;
                 this.props.addResult(
                     this.props.results,
