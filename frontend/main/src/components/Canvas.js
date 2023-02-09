@@ -18,21 +18,6 @@ class CanvasComponent extends Component {
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
     }
-    addDot(x, y, r) {
-        const dotsManager = this.canvas.dotsManager;
-        if (dotsManager.r !== r) {
-            dotsManager.cleanDots();
-        }
-        dotsManager.r = r;
-        dotsManager.addDot(
-            dotsManager.newDot(true, x, y, r)
-        );
-        this.props.addResult(
-            this.props.results,
-            r,
-            new Result(true, x, y, r, '12:40:50', 1111)
-        );
-    }
     handleClick(event) {
         const rValues = this.props.r;
         if (rValues === undefined || rValues == null) {
@@ -44,14 +29,12 @@ class CanvasComponent extends Component {
             return;
         }
         this.setState({errorMessage: ''});
-        let r = String(rValues[0]).trim();
+        let r = parseFloat(String(rValues[0]).trim());
         this.setState({valueR: r});
-        r = parseFloat(r);
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
         this.addDot(xy['x'], xy['y'], r);
-        this.canvas.drawCanvas();
     }
     validateR(rValues) {
         const errorRequired = outputErrorRequired(rValues);
@@ -69,11 +52,38 @@ class CanvasComponent extends Component {
             outputErrorRange(r)
         );
     }
+    addDot(x, y, r) {
+        this.props.addResult(
+            this.props.results,
+            r,
+            new Result(true, x, y, r, '12:40:50', 1111)
+        );
+    }
+    updateCanvas(results) {
+        if (results.length === undefined || results.length === 0) {
+            return;
+        }
+        const dotsManager = this.canvas.dotsManager;
+        dotsManager.cleanDots();
+        dotsManager.r = results[0].r;
+        for (let i=0; i < results.length; i++) {
+            const result = results[i];
+            if (result.r !== dotsManager.r) {
+                break;
+            }
+            dotsManager.addDot(
+                dotsManager.newDot(result.isHit, result.x, result.y, result.r)
+            );
+        }
+        this.canvas.drawCanvas();
+        return <div></div>;
+    }
     render() {
         return (
             <div>
                 <canvas id="canvas" height="600" width="600" onClick={(e) => this.handleClick(e)}></canvas>
                 {this.state.errorMessage}
+                {this.updateCanvas(this.props.results)}
             </div>
         );
     }
