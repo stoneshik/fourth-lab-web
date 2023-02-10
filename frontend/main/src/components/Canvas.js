@@ -36,8 +36,7 @@ class CanvasComponent extends Component {
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
         this.props.addResult(
-            this.props.results,
-            [r],
+            this.props,
             [new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)]
         );
     }
@@ -57,7 +56,7 @@ class CanvasComponent extends Component {
             outputErrorRange(r)
         );
     }
-    updateCanvas(results) {
+    updateCanvas(results, counter) {
         if (results === undefined || results.length === undefined || results.length === 0) {
             return;
         }
@@ -82,7 +81,7 @@ class CanvasComponent extends Component {
             <div>
                 <canvas id="canvas" height="600" width="600" onClick={(e) => this.handleClick(e)}></canvas>
                 {this.state.errorMessage}
-                {this.updateCanvas(this.props.results)}
+                {this.updateCanvas(this.props.results, this.props.counter)}
             </div>
         );
     }
@@ -122,7 +121,7 @@ function outputErrorRange(rValues) {
 }
 
 const mapStateToProps = (state) => {
-    return { results: state.results, r: state.r };
+    return { results: state.results, r: state.r, counter: state.counter };
 }
 const mapDispatchToProps = (dispatch) => {
     return { addResult: bindActionCreators(actionAddResult, dispatch) };

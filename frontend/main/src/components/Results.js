@@ -57,7 +57,12 @@ export class Result {
     }
 }
 
-export class TableResultsComponent extends Component {
+class TableResultsComponent extends Component {
+    constructor(props) {
+        super(props);
+        this.handleClickOnClearButton = this.handleClickOnClearButton.bind(this);
+    }
+
     componentDidMount() {
         this.loadResults();
     }
@@ -67,7 +72,7 @@ export class TableResultsComponent extends Component {
         if (this.props.results.length > 0) {
             return;
         }
-        this.props.addResult(this.props.results, this.props.r, [
+        this.props.addResult(this.props, [
             new Result(
                 true,
                 0.6863,
@@ -94,8 +99,8 @@ export class TableResultsComponent extends Component {
             )
         ]);
     }
-    clean() {
-        this.props.clearResults(this.props.results, this.props.r);
+    handleClickOnClearButton() {
+        this.props.clearResults(this.props);
     }
     renderResults(results) {
         return (
@@ -108,12 +113,12 @@ export class TableResultsComponent extends Component {
             </tbody>
         );
     }
-    render() {
-        if (this.props.results == null || this.props.results.length === 0) {
+    updateResults(results, counter) {
+        if (results == null || results.length === 0) {
             return (
                 <table id="results" className="results">
                     <tbody>
-                        <tr><td className="neutral">Пока здесь пусто</td></tr>
+                    <tr><td className="neutral">Пока здесь пусто</td></tr>
                     </tbody>
                 </table>
             );
@@ -131,16 +136,19 @@ export class TableResultsComponent extends Component {
                         <th scope="col">Время обработки</th>
                     </tr>
                     </thead>
-                    {this.renderResults(this.props.results)}
+                    {this.renderResults(results)}
                 </table>
-                <Button id="clean_button" onClick={() => this.clean()}>Очистить</Button>
+                <Button id="clean_button" onClick={() => this.handleClickOnClearButton()}>Очистить</Button>
             </div>
         );
+    }
+    render() {
+        return this.updateResults(this.props.results, this.props.counter);
     }
 }
 
 const mapStateToProps = (state) => {
-    return { results: state.results, r: state.r };
+    return { results: state.results, r: state.r, counter: state.counter };
 }
 const mapDispatchToProps = (dispatch) => {
     return {

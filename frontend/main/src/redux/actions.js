@@ -1,15 +1,18 @@
 import { ADD_RESULT, CLEAR_RESULTS, PASSING_R } from "./action-types";
 
 
-export const actionAddResult = (results, r, result) => {
-    results.unshift(...result);
-    return { type: ADD_RESULT, results: results, r: r };
+export const actionAddResult = (props, result) => {
+    props.results.unshift(...result);
+    return { type: ADD_RESULT, results: props.results, r: props.r, counter: iterateCounter(props.counter) };
 }
-export const actionClearResults = (results, r) => {
-    results = [];
-    return { type: CLEAR_RESULTS, results: results, r: r };
+export const actionClearResults = (props) => {
+    return { type: CLEAR_RESULTS, results: [], r: props.r, counter: iterateCounter(props.counter) };
 }
-export const actionPassingR = (results, r) => {
-    return { type: PASSING_R, results: results, r: r };
+export const actionPassingR = (props, r) => {
+    return { type: PASSING_R, results: props.results, r: r, counter: iterateCounter(props.counter) };
 }
 
+const iterateCounter = (counter) => {
+    const maxCounterValue = 1024;
+    return (counter > maxCounterValue) ? 0 : counter + 1;
+}

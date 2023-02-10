@@ -59,14 +59,14 @@ class MainForm extends Component {
     handlingPassingR(e) {
         this.setState({ selectedValuesR: e.value });
         if (e.value.length === undefined || e.value.length == null) {
-            this.props.passingR([e.value.code]);
+            this.props.passingR(this.props, [e.value.code]);
             return;
         }
         const rValues = [];
         for (let i=0; i < e.value.length; i++) {
             rValues[i] = e.value[i].code;
         }
-        this.props.passingR(this.props.results, rValues);
+        this.props.passingR(this.props, rValues);
     }
     validateForm() {
         const x = this.state.selectedValuesX;
@@ -112,8 +112,7 @@ class MainForm extends Component {
                     x = xValues[j].code;
                     r = rValues[i].code;
                     this.props.addResult(
-                        this.props.results,
-                        rValues,
+                        this.props,
                         [new Result(true, x, y, r, '12:40:50', 1111)]
                     );
                 }
@@ -126,8 +125,7 @@ class MainForm extends Component {
             for (let i=0; i < xValues.length; i++) {
                 x = parseFloat(xValues[i].code);
                 this.props.addResult(
-                    this.props.results,
-                    [r],
+                    this.props,
                     [new Result(true, x, y, r, '12:40:50', 1111)]
                 );
             }
@@ -140,8 +138,7 @@ class MainForm extends Component {
             for (let i=0; i < rValues.length; i++) {
                 r = rValues[i].code;
                 this.props.addResult(
-                    this.props.results,
-                    rValues,
+                    this.props,
                     [new Result(true, x, y, r, '12:40:50', 1111)]
                 );
             }
@@ -150,8 +147,7 @@ class MainForm extends Component {
         const x = parseFloat(xValues[0].code);
         const r = parseFloat(rValues[0].code);
         this.props.addResult(
-            this.props.results,
-            [r],
+            this.props,
             [new Result(true, x, y, r, '12:40:50', 1111)]
         );
     }
@@ -272,7 +268,7 @@ function outputErrorAmountSelect(x, r) {
 }
 
 const mapStateToProps = (state) => {
-    return { results: state.results, r: state.r };
+    return { results: state.results, r: state.r, counter: state.counter };
 }
 const mapDispatchToProps = (dispatch) => {
     return {
