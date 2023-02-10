@@ -278,4 +278,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export const MainFormContainer = connect(mapStateToProps, mapDispatchToProps)(MainForm);
-

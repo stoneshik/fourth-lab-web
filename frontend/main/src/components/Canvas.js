@@ -65,7 +65,6 @@ class CanvasComponent extends Component {
             this.canvas.drawCanvas();
             return <div></div>;
         }
-        console.log('1111');
         dotsManager.r = results[0].r;
         for (let i=0; i < results.length; i++) {
             const result = results[i];
