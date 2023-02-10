@@ -1,20 +1,3 @@
-export class DotsManager {
-    constructor() {
-        this.dots = [];
-        this.r = null;
-    }
-    // Работа с данными точек, считываемыми из таблицы результатов
-    newDot(isHit, x, y, r) {
-        return {isHit: isHit, x: x, y: y, r: r};
-    }
-    addDot(dot) {
-        this.dots.push(dot);
-    }
-    cleanDots() {
-        this.dots = [];
-    }
-}
-
 export class Canvas {
     constructor() {
         this.dotsManager = new DotsManager();
@@ -198,5 +181,20 @@ export class Canvas {
             }
             ctx.fill();
         }
+    }
+}
+export class DotsManager {
+    constructor() {
+        this.dots = [];
+        this.r = null;
+    }
+    newDot(isHit, x, y, r) {
+        return {isHit: isHit, x: x, y: y, r: r};
+    }
+    addDot(dot) {
+        this.dots.push(dot);
+    }
+    cleanDots() {
+        this.dots = [];
     }
 }

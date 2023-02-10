@@ -2,9 +2,9 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import { Result } from "./Results";
 import { actionAddResult } from "../redux/actions";
 import { Canvas } from "../utils/Canvas";
+import { Result } from "../utils/Result";
 
 
 class CanvasComponent extends Component {

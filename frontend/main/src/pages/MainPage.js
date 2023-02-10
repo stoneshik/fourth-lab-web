@@ -5,7 +5,7 @@ import "primereact/resources/primereact.min.css";
 
 import { CanvasContainer } from "../components/Canvas";
 import { MainFormContainer } from "../components/MainForm";
-import { TableResultsContainer } from "../components/Results";
+import { TableResultsContainer } from "../components/TableResults";
 import store from "../redux/store";
 
 function MainPage() {

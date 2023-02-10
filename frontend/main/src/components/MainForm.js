@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { actionAddResult, actionPassingR } from "../redux/actions";
-import { Result } from "./Results";
+import { Result } from "../utils/Result";
 
 
 class MainForm extends Component {
