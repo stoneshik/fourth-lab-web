@@ -17,7 +17,6 @@ class CanvasComponent extends Component {
     componentDidMount() {
         this.canvas.updateCanvasObj();
         this.canvas.drawCanvas();
-        this.updateCanvas(this.props.results);
     }
     handleClick(event) {
         const rValues = this.props.r;
@@ -57,12 +56,16 @@ class CanvasComponent extends Component {
         );
     }
     updateCanvas(results, counter) {
-        if (results === undefined || results.length === undefined || results.length === 0) {
-            return;
+        if (results === undefined || results.length === undefined || this.canvas.canvasObj.canvas === undefined) {
+            return <div></div>;
         }
-        console.log('1111');
         const dotsManager = this.canvas.dotsManager;
         dotsManager.cleanDots();
+        if (results.length === 0) {
+            this.canvas.drawCanvas();
+            return <div></div>;
+        }
+        console.log('1111');
         dotsManager.r = results[0].r;
         for (let i=0; i < results.length; i++) {
             const result = results[i];
