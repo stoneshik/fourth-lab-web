@@ -16,6 +16,14 @@ public class DotService {
     }
 
     public List<Dot> findAll() {
-        return repository.findAll();
+        return this.repository.findAll();
+    }
+
+    public void add(List<Dot> dots) {
+        this.repository.saveAll(dots);
+    }
+
+    public void clear() {
+        this.repository.deleteAll();
     }
 }

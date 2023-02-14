@@ -19,6 +19,24 @@ public class Dot {
     private LocalDateTime timeDispatch = LocalDateTime.now(Clock.systemUTC());
     private Long timeLead;
 
+    public Dot() {}
+
+    public Dot(Double x, Double y, Double r) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.isHit = this.checkHit();
+        this.timeLead = System.nanoTime();
+    }
+
+    private boolean checkHit() {
+        return (
+            (this.x <= 0 && this.y <= 0 && this.y == -(this.x + this.r)) ||
+            (this.x >= 0 && this.y <= 0 && this.x <= this.r / 2 && this.y >= -this.r) ||
+            (this.x >= 0 && this.y >= 0 && Math.pow(this.x, 2) + Math.pow(this.y, 2) <= Math.pow(this.r, 2))
+        );
+    }
+
     public Long getId() {
         return id;
     }
