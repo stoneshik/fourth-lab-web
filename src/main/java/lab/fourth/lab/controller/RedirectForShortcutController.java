@@ -10,6 +10,7 @@ public class RedirectForShortcutController {
     public RedirectView redirectForMainPage() {
         return new RedirectView("/main.html");
     }
+
     @GetMapping("/index")
     public RedirectView redirectForIndexPage() {
         return new RedirectView("/index.html");

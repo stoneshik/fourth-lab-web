@@ -7,11 +7,11 @@ public enum Status {
     CODE_200(200, "ok"),
     CODE_201(201, "dot created"),
     CODE_400(400, "bad request"),
-    CODE_401(401, "not authorized"),
-    ;
+    CODE_401(401, "not authorized");
 
     private final int code;
     private final String text;
+
     Status(int code, String text) {
         this.code = code;
         this.text = text;
