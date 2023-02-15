@@ -9,6 +9,7 @@ import lab.fourth.lab.api.dot.DotResponseFabric;
 import lab.fourth.lab.api.dot.Status;
 import lab.fourth.lab.entities.Dot;
 import lab.fourth.lab.service.DotService;
+import lab.fourth.lab.util.DotUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +31,7 @@ public class DotController {
 
     @PostMapping("api/dot/add")
     public DotResponse add(HttpServletRequest request) {
-        //long startTime = System.nanoTime();
+        long startTime = System.nanoTime();
         String dotsRawString = request.getParameter("dots");
         if (dotsRawString == null) {
             return DotResponseFabric.newInstance(Status.CODE_401);
@@ -42,6 +43,9 @@ public class DotController {
         } catch (JsonProcessingException e) {
             return DotResponseFabric.newInstance(Status.CODE_401);
         }
+        dots.forEach(
+            dot -> DotUtil.updateDot(dot, startTime)
+        );
         this.dotService.add(dots);
         return DotResponseFabric.newInstance(Status.CODE_201, true);
     }
