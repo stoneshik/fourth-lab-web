@@ -50,7 +50,7 @@ public class DotController {
         } catch (TransactionSystemException e) {
             return DotResponseFabric.newInstance(Status.CODE_401, e.getMessage());
         }
-        return DotResponseFabric.newInstance(Status.CODE_201, true);
+        return DotResponseFabric.newInstance(Status.CODE_201, dots, true);
     }
 
     @DeleteMapping("api/dot/clear")

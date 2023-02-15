@@ -5,8 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { actionAddResult, actionPassingR } from "../redux/actions";
-import { Result } from "../utils/Result";
-
+import { addNewDotsRequest } from "../requests";
 
 class MainForm extends Component {
     constructor(props) {
@@ -103,6 +102,7 @@ class MainForm extends Component {
         const xValues = this.state.selectedValuesX;
         const y = parseFloat(this.state.valueY);
         const rValues = this.state.selectedValuesR;
+        const dotsCords = [];
         if (xValues.length > 1 && rValues.length > 1) {
             xValues.forEach( (x) => parseFloat(x.code) );
             rValues.forEach( (r) => parseFloat(r.code) );
@@ -111,45 +111,52 @@ class MainForm extends Component {
                 for (let j=0; j < xValues.length; j++) {
                     x = xValues[j].code;
                     r = rValues[i].code;
-                    this.props.addResult(
+                    dotsCords.unshift({"x": x, "y": y, "r": r});
+                    /*this.props.addResult(
                         this.props,
                         [new Result(true, x, y, r, '12:40:50', 1111)]
-                    );
+                    );*/
                 }
             }
-            return;
+            //return;
         }
-        if (xValues.length > 1) {
+        else if (xValues.length > 1) {
             const r = parseFloat(rValues[0].code);
             let x;
             for (let i=0; i < xValues.length; i++) {
                 x = parseFloat(xValues[i].code);
-                this.props.addResult(
+                dotsCords.unshift({"x": x, "y": y, "r": r});
+                /*this.props.addResult(
                     this.props,
                     [new Result(true, x, y, r, '12:40:50', 1111)]
-                );
+                );*/
             }
-            return;
+            //return;
         }
-        if (rValues.length > 1) {
+        else if (rValues.length > 1) {
             const x = parseFloat(xValues[0].code);
             rValues.forEach( (r) => parseFloat(r.code) );
             let r;
             for (let i=0; i < rValues.length; i++) {
                 r = rValues[i].code;
-                this.props.addResult(
+                dotsCords.unshift({"x": x, "y": y, "r": r});
+                /*this.props.addResult(
                     this.props,
                     [new Result(true, x, y, r, '12:40:50', 1111)]
-                );
+                );*/
             }
-            return;
+            //return;
         }
-        const x = parseFloat(xValues[0].code);
-        const r = parseFloat(rValues[0].code);
-        this.props.addResult(
-            this.props,
-            [new Result(true, x, y, r, '12:40:50', 1111)]
-        );
+        else {
+            const x = parseFloat(xValues[0].code);
+            const r = parseFloat(rValues[0].code);
+            dotsCords.unshift({"x": x, "y": y, "r": r});
+            /*this.props.addResult(
+                this.props,
+                [new Result(true, x, y, r, '12:40:50', 1111)]
+            );*/
+        }
+        addNewDotsRequest(dotsCords, this.props.addResult, this.props);
     }
     render() {
         return (

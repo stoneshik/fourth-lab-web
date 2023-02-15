@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { actionAddResult, actionClearResults } from "../redux/actions";
-import { Result } from "../utils/Result";
+import { loadDots, clearDotsRequest } from "../requests";
 
 
 class TableResultsComponent extends Component {
@@ -20,7 +20,8 @@ class TableResultsComponent extends Component {
         if (this.props.results.length > 0) {
             return;
         }
-        this.props.addResult(this.props, [
+        loadDots(this.props.addResult, this.props);
+        /*this.props.addResult(this.props, [
             new Result(
                 true,
                 0.6863,
@@ -45,10 +46,11 @@ class TableResultsComponent extends Component {
                 '17:17:11',
                 40956
             )
-        ]);
+        ]);*/
     }
     handleClickOnClearButton() {
-        this.props.clearResults(this.props);
+        clearDotsRequest(this.props.clearResults, this.props);
+        //this.props.clearResults(this.props);
     }
     renderResults(results) {
         return (

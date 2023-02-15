@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 
 import { actionAddResult } from "../redux/actions";
 import { Canvas } from "../utils/Canvas";
-import { Result } from "../utils/Result";
+import { addNewDotsRequest } from "../requests";
 
 
 class CanvasComponent extends Component {
@@ -34,10 +34,13 @@ class CanvasComponent extends Component {
         const offsetX = event.clientX - event.target.offsetLeft;
         const offsetY = event.clientY - event.target.offsetTop;
         const xy = this.canvas.calcCoordinates(offsetX, offsetY, r);
-        this.props.addResult(
+
+        const dotsCords = [{"x": parseFloat(xy['x']), "y": parseFloat(xy['y']), "r": r}];
+        addNewDotsRequest(dotsCords, this.props.addResult, this.props);
+        /*this.props.addResult(
             this.props,
             [new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)]
-        );
+        );*/
     }
     validateR(rValues) {
         const errorRequired = outputErrorRequired(rValues);
