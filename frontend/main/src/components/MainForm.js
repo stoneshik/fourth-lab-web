@@ -112,13 +112,8 @@ class MainForm extends Component {
                     x = xValues[j].code;
                     r = rValues[i].code;
                     dotsCords.unshift({"x": x, "y": y, "r": r});
-                    /*this.props.addResult(
-                        this.props,
-                        [new Result(true, x, y, r, '12:40:50', 1111)]
-                    );*/
                 }
             }
-            //return;
         }
         else if (xValues.length > 1) {
             const r = parseFloat(rValues[0].code);
@@ -126,12 +121,7 @@ class MainForm extends Component {
             for (let i=0; i < xValues.length; i++) {
                 x = parseFloat(xValues[i].code);
                 dotsCords.unshift({"x": x, "y": y, "r": r});
-                /*this.props.addResult(
-                    this.props,
-                    [new Result(true, x, y, r, '12:40:50', 1111)]
-                );*/
             }
-            //return;
         }
         else if (rValues.length > 1) {
             const x = parseFloat(xValues[0].code);
@@ -140,21 +130,12 @@ class MainForm extends Component {
             for (let i=0; i < rValues.length; i++) {
                 r = rValues[i].code;
                 dotsCords.unshift({"x": x, "y": y, "r": r});
-                /*this.props.addResult(
-                    this.props,
-                    [new Result(true, x, y, r, '12:40:50', 1111)]
-                );*/
             }
-            //return;
         }
         else {
             const x = parseFloat(xValues[0].code);
             const r = parseFloat(rValues[0].code);
             dotsCords.unshift({"x": x, "y": y, "r": r});
-            /*this.props.addResult(
-                this.props,
-                [new Result(true, x, y, r, '12:40:50', 1111)]
-            );*/
         }
         addNewDotsRequest(dotsCords, this.props.addResult, this.props);
     }

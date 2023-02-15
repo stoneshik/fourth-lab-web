@@ -37,10 +37,6 @@ class CanvasComponent extends Component {
 
         const dotsCords = [{"x": parseFloat(xy['x']), "y": parseFloat(xy['y']), "r": r}];
         addNewDotsRequest(dotsCords, this.props.addResult, this.props);
-        /*this.props.addResult(
-            this.props,
-            [new Result(true, parseFloat(xy['x']), parseFloat(xy['y']), r, '12:40:50', 1111)]
-        );*/
     }
     validateR(rValues) {
         const errorRequired = outputErrorRequired(rValues);

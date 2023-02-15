@@ -21,36 +21,9 @@ class TableResultsComponent extends Component {
             return;
         }
         loadDots(this.props.addResult, this.props);
-        /*this.props.addResult(this.props, [
-            new Result(
-                true,
-                0.6863,
-                -0.1373,
-                1.0,
-                '14:09:25',
-                39488
-            ),
-            new Result(
-                true,
-                -0.1765,
-                0.402,
-                1.0,
-                '14:09:26',
-                47086
-            ),
-            new Result(
-                false,
-                0.9608,
-                0.5588,
-                1.0,
-                '17:17:11',
-                40956
-            )
-        ]);*/
     }
     handleClickOnClearButton() {
         clearDotsRequest(this.props.clearResults, this.props);
-        //this.props.clearResults(this.props);
     }
     renderResults(results) {
         return (
