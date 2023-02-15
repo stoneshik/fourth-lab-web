@@ -1,6 +1,9 @@
 package lab.fourth.lab.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -12,8 +15,17 @@ public class Dot {
     @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
     private Long id;
+    @NotNull
+    @DecimalMin("-5.0")
+    @DecimalMax("3.0")
     private Double x = 0.0;
+    @NotNull
+    @DecimalMin("-5.0")
+    @DecimalMax("5.0")
     private Double y = 0.0;
+    @NotNull
+    @DecimalMin("1.0")
+    @DecimalMax("3.0")
     private Double r = 1.0;
     private boolean isHit = false;
     private LocalDateTime timeDispatch = LocalDateTime.now(Clock.systemUTC());

@@ -4,4 +4,4 @@ import lab.fourth.lab.entities.Dot;
 
 import java.util.ArrayList;
 
-public record DotResponse(Status statusResponse, ArrayList<Dot> dots, boolean boolAnswer) {}
+public record DotResponse(Status statusResponse, ArrayList<Dot> dots, boolean boolAnswer, String errorMessage) {}
