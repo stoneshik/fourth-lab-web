@@ -1,7 +1,6 @@
 package lab.fourth.lab.service;
 
-import jakarta.validation.ConstraintViolationException;
-import lab.fourth.lab.entities.Dot;
+import lab.fourth.lab.entity.Dot;
 import lab.fourth.lab.repository.DotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

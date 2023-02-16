@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lab.fourth.lab.api.dot.DotResponse;
 import lab.fourth.lab.api.dot.DotResponseFabric;
 import lab.fourth.lab.api.dot.Status;
-import lab.fourth.lab.entities.Dot;
+import lab.fourth.lab.entity.Dot;
 import lab.fourth.lab.service.DotService;
 import lab.fourth.lab.util.DotUtil;
 import org.springframework.beans.factory.annotation.Autowired;

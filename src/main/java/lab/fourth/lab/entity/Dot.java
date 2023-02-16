@@ -1,4 +1,4 @@
-package lab.fourth.lab.entities;
+package lab.fourth.lab.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "dot")
 public class Dot {
     @Id
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence_dot", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
     private Long id;
     @NotNull
