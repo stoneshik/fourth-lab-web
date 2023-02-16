@@ -88,32 +88,32 @@ class CanvasComponent extends Component {
     }
 }
 
-const outputErrorRequired = (rValues) => {
+function outputErrorRequired(rValues) {
     if (rValues == null ||rValues.length === undefined || rValues.length === 0) {
         return <p className="error">Не выбрано r</p>;
     }
     return false;
 }
-const outputErrorSelected = (rValues) => {
+function outputErrorSelected(rValues) {
     if (rValues.length > 1) {
         return <p className="error">Выбрано более одного значения r</p>;
     }
     return false;
 }
-const outputErrorMaxLength = (rValues) => {
+function outputErrorMaxLength(rValues) {
     if (String(rValues).length > 9) {
         return <p className="error">Превышена длина ввода r</p>;
     }
     return false;
 }
-const outputErrorPattern = (rValues) => {
+function outputErrorPattern(rValues) {
     const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
     if (String(rValues).match(regex) == null) {
         return <p className="error">Неправильный формат ввода r</p>;
     }
     return false;
 }
-const outputErrorRange = (rValues) => {
+function outputErrorRange(rValues) {
     const valueR = parseFloat(String(rValues));
     if (valueR < 1 || valueR > 3) {
         return <p className="error">r выходит за допустимый диапазон</p>;

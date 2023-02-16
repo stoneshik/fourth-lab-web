@@ -1,6 +1,6 @@
 package lab.fourth.lab.api.dot;
 
-import lab.fourth.lab.entities.Dot;
+import lab.fourth.lab.entity.Dot;
 
 import java.util.ArrayList;
 

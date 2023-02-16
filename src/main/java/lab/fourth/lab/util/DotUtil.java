@@ -1,6 +1,6 @@
 package lab.fourth.lab.util;
 
-import lab.fourth.lab.entities.Dot;
+import lab.fourth.lab.entity.Dot;
 
 public class DotUtil {
     private static boolean checkHit(Double x, Double y, Double r) {

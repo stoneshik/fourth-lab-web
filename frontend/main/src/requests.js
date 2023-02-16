@@ -31,7 +31,7 @@ export const clearDotsRequest = (clearResults, props) => {
 }
 
 
-const addResultsInTable = (data, addResult, props) => {
+function addResultsInTable(data, addResult, props) {
     const dots = data.dots;
     if (dots === undefined || dots == null || dots.length === undefined) {
         return;
