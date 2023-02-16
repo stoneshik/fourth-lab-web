@@ -6,9 +6,11 @@ export class FormComponent extends Component {
         this.state = {
             login: '',
             passwordLogin: '',
-            errorMessage: ''
+            errorMessage: '',
+            formChoice: 'login',
         };
-        this.handlingSubmit = this.handlingSubmit.bind(this);
+        this.handlingSubmitLogin = this.handlingSubmitLogin.bind(this);
+        this.handlingSubmitRegister = this.handlingSubmitRegister.bind(this);
     }
 
     handlingUserInput = (e) => {
@@ -17,7 +19,17 @@ export class FormComponent extends Component {
         this.setState({[name]: value});
     }
 
-    handlingSubmit = (event) => {
+    handlingSubmitLogin = (event) => {
+        event.preventDefault();
+        const errorMessage = this.validateForm();
+        if (errorMessage !== false) {
+            this.setState({errorMessage: errorMessage});
+            return false;
+        }
+        this.setState({errorMessage: ''});
+    }
+
+    handlingSubmitRegister = (event) => {
         event.preventDefault();
         const errorMessage = this.validateForm();
         if (errorMessage !== false) {
@@ -37,22 +49,65 @@ export class FormComponent extends Component {
         );
     }
 
-    render() {
+    changeForm = () => {
+        if (this.state.formChoice === 'login') {
+            this.setState({formChoice: 'register'});
+        }
+        else if (this.state.formChoice === 'register') {
+            this.setState({formChoice: 'login'});
+        }
+        else {
+            this.setState({formChoice: 'register'});
+        }
+    }
+
+    renderLoginForm = () => {
         return (
-            <form onSubmit={(e) => this.handlingSubmit(e)} id="login_form" className="ui-form">
-                <h3>Авторизация</h3>
-                <div className="form-row">
-                    <input type="text" name="login" onChange={this.handlingUserInput}/>
-                    <label className="text-input-label">Логин:</label>
-                </div>
-                <div className="form-row">
-                    <input type="password" name="passwordLogin" onChange={this.handlingUserInput}/>
-                    <label className="text-input-label">Пароль:</label>
-                </div>
-                <input type="submit"/>
-                {this.state.errorMessage}
-            </form>
+            <div>
+                <form onSubmit={(e) => this.handlingSubmitLogin(e)} id="login_form" className="ui-form">
+                    <h3>Авторизация</h3>
+                    <div className="form-row">
+                        <input type="text" name="login" onChange={this.handlingUserInput}/>
+                        <label className="text-input-label">Логин:</label>
+                    </div>
+                    <div className="form-row">
+                        <input type="password" name="passwordLogin" onChange={this.handlingUserInput}/>
+                        <label className="text-input-label">Пароль:</label>
+                    </div>
+                    <input type="submit"/>
+                    {this.state.errorMessage}
+                </form>
+                <a onClick={this.changeForm} id="change-form" href="#">Зарегистрироваться</a>
+            </div>
         );
+    }
+
+    renderRegisterForm = () => {
+        return (
+            <div>
+                <form onSubmit={(e) => this.handlingSubmitRegister(e)} id="register_form" className="ui-form">
+                    <h3>Регистрация</h3>
+                    <div className="form-row">
+                        <input type="text" name="login" onChange={this.handlingUserInput}/>
+                        <label className="text-input-label">Логин:</label>
+                    </div>
+                    <div className="form-row">
+                        <input type="password" name="passwordLogin" onChange={this.handlingUserInput}/>
+                        <label className="text-input-label">Пароль:</label>
+                    </div>
+                    <input type="submit"/>
+                    {this.state.errorMessage}
+                </form>
+                <a onClick={this.changeForm} id="change-form" href="#">Авторизоваться</a>
+            </div>
+        );
+    }
+
+    render() {
+        if (this.state.formChoice === 'login') {
+            return this.renderLoginForm();
+        }
+        return this.renderRegisterForm();
     }
 }
 
