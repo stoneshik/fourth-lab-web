@@ -1,4 +1,4 @@
-function parseTime(timeUTC) {
+const parseTime = (timeUTC) => {
     const regexp = /(\d+)(?::(\d{1,2}))(?::(\d{1,2}))/;
     let date = new Date();
     let time = timeUTC.match(regexp);
@@ -7,7 +7,7 @@ function parseTime(timeUTC) {
     date.setUTCSeconds(parseInt(time[3]));
     return date;
 }
-export function getParseTimeInString(timeUTC) {
+export const getParseTimeInString = (timeUTC) => {
     const timeDate = parseTime(timeUTC);
     let hours = timeDate.getHours();
     let minutes = timeDate.getMinutes();

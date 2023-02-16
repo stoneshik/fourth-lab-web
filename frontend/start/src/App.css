@@ -72,6 +72,7 @@ label {
   padding: 10px;
 }
 .ui-form {
+  min-width: 350px;
   max-width: 450px;
   padding: 80px 30px 30px;
   margin: 25px 0;
@@ -94,7 +95,7 @@ label {
 .form-row input {
   display: block;
   width: 100%;
-  padding: 0 40px;
+  padding: 0 0 0 90px;
   line-height: 40px;
   font-family: 'Roboto', sans-serif;
   background: none;
@@ -107,18 +108,20 @@ label {
   margin: 0;
   left: 13px;
   color: #9D959D;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 300;
   transform: translateY(-35px);
   transition: all 0.2s ease;
 }
-.form-row input[type="text"]:focus {
+.form-row input[type="text"]:focus,
+.form-row input[type="password"]:focus {
   outline: 0;
   border-color: #F77A52;
 }
-.form-row input[type="text"]:focus+label {
+.form-row input[type="text"]:focus+label,
+.form-row input[type="password"]:focus+label {
   margin-left: -20px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 400;
   outline: 0;
   border-color: #F77A52;

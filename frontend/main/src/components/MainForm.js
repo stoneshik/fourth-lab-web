@@ -173,7 +173,7 @@ class MainForm extends Component {
     }
 }
 
-function outputErrorRequired(x, y, r) {
+const outputErrorRequired = (x, y, r) => {
     const errorLabels = [];
     if (x === null || y == null || r == null ||
         x.length === 0 || r.length === 0) {
@@ -184,7 +184,7 @@ function outputErrorRequired(x, y, r) {
     }
     return false;
 }
-function outputErrorMaxLength(x, y, r) {
+const outputErrorMaxLength = (x, y, r) => {
     const errorLabels = [];
     let resultX = true;
     let resultY = true;
@@ -204,7 +204,7 @@ function outputErrorMaxLength(x, y, r) {
     }
     return false;
 }
-function outputErrorPattern(x, y, r) {
+const outputErrorPattern = (x, y, r) => {
     const errorLabels = [];
     const regex = '^[-+]?[0-9]{0,9}(?:[.,][0-9]{1,9})*$';
     let resultX = true;
@@ -225,7 +225,7 @@ function outputErrorPattern(x, y, r) {
     }
     return false;
 }
-function outputErrorRange(x, y, r) {
+const outputErrorRange = (x, y, r) => {
     const errorLabels = [];
     let resultX = true;
     let resultY = true;
@@ -248,7 +248,7 @@ function outputErrorRange(x, y, r) {
     }
     return false;
 }
-function outputErrorAmountSelect(x, r) {
+const outputErrorAmountSelect = (x, r) => {
     if (x.length > 1 && r.length > 1 && x.length !== r.length) {
         return <p className="error">x и r - должны иметь одинаковое количество выбранных элементов, либо для одного из этих параметров должен быть выбран один элемент</p>;
     }
