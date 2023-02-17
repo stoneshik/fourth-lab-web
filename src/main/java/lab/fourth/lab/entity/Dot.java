@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Table(name = "t_dot")
 public class Dot {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "sequence_generator_dot", sequenceName = "id_sequence_dot", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator_dot")
     private Long id;
     @NotNull
     @DecimalMin("-5.0")

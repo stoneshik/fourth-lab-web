@@ -1,5 +1,6 @@
 package lab.fourth.lab.api.dot;
 
+import lab.fourth.lab.api.Status;
 import lab.fourth.lab.entity.Dot;
 
 import java.util.ArrayList;

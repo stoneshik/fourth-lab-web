@@ -1,18 +1,20 @@
 package lab.fourth.lab.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lab.fourth.lab.api.Status;
+import lab.fourth.lab.api.user.UserResponse;
+import lab.fourth.lab.api.user.UserResponseFabric;
 import lab.fourth.lab.entity.User;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 public class RegistrationController {
     private final UserService userService;
 
@@ -20,24 +22,30 @@ public class RegistrationController {
         this.userService = userService;
     }
 
-    @GetMapping("/api/user/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
-
-        return "registration";
-    }
-
     @PostMapping("/api/user/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "registration";
+    public UserResponse addUser(HttpServletRequest request) {
+        String userRawString = request.getParameter("user");
+        if (userRawString == null) {
+            return UserResponseFabric.newInstance(Status.CODE_401, "Не найден POST параметр user_name");
         }
-        if (!userService.saveUser(userForm)){
-            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "registration";
+        ObjectMapper mapper = new ObjectMapper();
+        User newUser;
+        try {
+            newUser = mapper.readValue(userRawString, User.class);
+        } catch (JsonProcessingException e) {
+            return UserResponseFabric.newInstance(Status.CODE_401, "Ошибка в переданном JSON");
+        }
+        try {
+            if (!userService.saveUser(newUser)) {
+                return UserResponseFabric.newInstance(
+                        Status.CODE_401,
+                        "Пользователь с таким именем уже существует"
+                );
+            }
+        } catch (TransactionSystemException e) {
+            return UserResponseFabric.newInstance(Status.CODE_401, e.getMessage());
         }
 
-        return "redirect:/";
+        return UserResponseFabric.newInstance(Status.CODE_200, true);
     }
 }

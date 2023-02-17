@@ -1,4 +1,4 @@
-package lab.fourth.lab.api.dot;
+package lab.fourth.lab.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 

@@ -38,7 +38,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/news").hasRole("USER")
                 //Доступ разрешен всем пользователей
-                .antMatchers("/", "/index", "/index.html", "/static/**").permitAll()
+                .antMatchers("/", "/manifest.json", "/index", "/index.html", "/static/**").permitAll()
                 //Все остальные страницы требуют аутентификации
             .anyRequest().authenticated()
             .and()
