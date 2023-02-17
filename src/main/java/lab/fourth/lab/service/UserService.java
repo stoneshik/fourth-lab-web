@@ -1,10 +1,9 @@
 package lab.fourth.lab.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lab.fourth.lab.entity.Role;
 import lab.fourth.lab.entity.User;
-import lab.fourth.lab.repository.RoleRepository;
 import lab.fourth.lab.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;

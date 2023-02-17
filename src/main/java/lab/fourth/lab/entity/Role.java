@@ -1,6 +1,6 @@
 package lab.fourth.lab.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;

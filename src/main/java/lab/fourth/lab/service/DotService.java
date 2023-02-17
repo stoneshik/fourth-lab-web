@@ -1,5 +1,6 @@
 package lab.fourth.lab.service;
 
+import javax.transaction.Transactional;
 import lab.fourth.lab.entity.Dot;
 import lab.fourth.lab.repository.DotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +16,17 @@ public class DotService {
         this.repository = dotRepository;
     }
 
+    @Transactional
     public List<Dot> findAll() {
         return this.repository.findAll();
     }
 
+    @Transactional
     public void add(List<Dot> dots) {
         this.repository.saveAll(dots);
     }
 
+    @Transactional
     public void clear() {
         this.repository.deleteAll();
     }

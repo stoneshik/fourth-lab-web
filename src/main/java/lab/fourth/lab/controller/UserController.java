@@ -18,7 +18,7 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/api/user/load", produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody List<User> getAll() {
         return this.service.allUsers();
     }
