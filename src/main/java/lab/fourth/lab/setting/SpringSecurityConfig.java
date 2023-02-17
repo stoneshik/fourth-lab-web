@@ -1,6 +1,5 @@
 package lab.fourth.lab.setting;
 
-import lab.fourth.lab.security.JwtTokenRepository;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
