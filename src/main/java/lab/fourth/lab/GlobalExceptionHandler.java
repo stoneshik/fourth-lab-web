@@ -24,7 +24,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({AuthenticationException.class, MissingCsrfTokenException.class, InvalidCsrfTokenException.class, SessionAuthenticationException.class})
     public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
-        this.tokenRepository.clearToken(response);
+        this.tokenRepository.clearToken(request, response);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "error.authorization");
     }

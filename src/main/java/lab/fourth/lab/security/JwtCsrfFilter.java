@@ -32,7 +32,8 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
     private boolean filterServletPath(String servletPath) {
         if (servletPath.equals("/") || servletPath.equals("/manifest.json") ||
-                servletPath.equals("/index") || servletPath.equals("/index.html") || servletPath.equals("/favicon.ico")) {
+                servletPath.equals("/index") || servletPath.equals("/index.jsp")
+                || servletPath.equals("/favicon.ico") || servletPath.equals("/api/user/auth")) {
             return true;
         }
         Pattern pattern = Pattern.compile("^/static(?:/[A-Za-z0-9_.]*)*");
@@ -64,7 +65,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
                 actualToken = request.getParameter(csrfToken.getParameterName());
             }
             try {
-                if (!StringUtils.isEmpty(actualToken)) {
+                if (actualToken != null) {
                     Jwts.parser()
                             .setSigningKey(((JwtTokenRepository) tokenRepository).getSecret())
                             .parseClaimsJws(actualToken);

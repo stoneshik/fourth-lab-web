@@ -43,7 +43,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/registration", "/api/user/auth").not().fullyAuthenticated()
                 //Доступ только для пользователей с ролью Администратор
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/news").hasRole("USER")
+                .antMatchers("/main", "/main.jsp").hasRole("USER")
                 //Доступ разрешен всем пользователей
                 .antMatchers("/", "/manifest.json", "/index", "/index.html", "/static/**").permitAll()
 

@@ -3,6 +3,7 @@ package lab.fourth.lab.security;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lab.fourth.lab.util.TokenUtil;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.DefaultCsrfToken;
@@ -20,20 +21,10 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS
 
 @Repository
 public class JwtTokenRepository implements CsrfTokenRepository {
-    private static String token;
-    private static String headerToken;
     private final String secret;
 
     public JwtTokenRepository() {
         this.secret = "springrest";
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public String getHeaderToken() {
-        return headerToken;
     }
 
     public String getSecret() {
@@ -66,8 +57,10 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     @Override
     public void saveToken(CsrfToken csrfToken, HttpServletRequest request, HttpServletResponse response) {
         if (Objects.nonNull(csrfToken)) {
-            token = csrfToken.getToken();
-            headerToken = csrfToken.getHeaderName();
+            String token = csrfToken.getToken();
+            String headerToken = csrfToken.getHeaderName();
+            TokenUtil.setValue(request, token, headerToken);
+
             if (!response.getHeaderNames().contains(ACCESS_CONTROL_EXPOSE_HEADERS)) {
                 response.addHeader(ACCESS_CONTROL_EXPOSE_HEADERS, csrfToken.getHeaderName());
             }
@@ -84,7 +77,8 @@ public class JwtTokenRepository implements CsrfTokenRepository {
         return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     }
 
-    public void clearToken(HttpServletResponse response) {
+    public void clearToken(HttpServletRequest request, HttpServletResponse response) {
+        TokenUtil.deleteValue(request);
         if (response.getHeaderNames().contains("x-csrf-token")) {
             response.setHeader("x-csrf-token", "");
         }
