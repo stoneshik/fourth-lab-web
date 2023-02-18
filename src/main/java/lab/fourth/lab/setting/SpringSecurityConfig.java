@@ -1,5 +1,7 @@
 package lab.fourth.lab.setting;
 
+import lab.fourth.lab.security.JwtCsrfFilter;
+import lab.fourth.lab.security.JwtTokenRepository;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +10,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
@@ -15,14 +18,17 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService service;
+    private final JwtTokenRepository jwtTokenRepository;
 
     @Qualifier("handlerExceptionResolver")
     private final HandlerExceptionResolver resolver;
 
     public SpringSecurityConfig(
             @Autowired UserService userService,
+            @Autowired JwtTokenRepository jwtTokenRepository,
             @Qualifier("handlerExceptionResolver") HandlerExceptionResolver resolver) {
         this.service = userService;
+        this.jwtTokenRepository = jwtTokenRepository;
         this.resolver = resolver;
     }
 
@@ -31,6 +37,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf()
                 .disable()
+                .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
             .authorizeRequests()
                 //Доступ только для не зарегистрированных пользователей
                 .antMatchers("/api/user/registration", "/api/user/auth").not().fullyAuthenticated()
@@ -39,6 +46,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/news").hasRole("USER")
                 //Доступ разрешен всем пользователей
                 .antMatchers("/", "/manifest.json", "/index", "/index.html", "/static/**").permitAll()
+
                 //Все остальные страницы требуют аутентификации
             .anyRequest().authenticated()
             .and()

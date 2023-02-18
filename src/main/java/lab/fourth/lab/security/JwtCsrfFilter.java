@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class JwtCsrfFilter extends OncePerRequestFilter {
 
@@ -27,6 +28,15 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     public JwtCsrfFilter(@Autowired JwtTokenRepository tokenRepository, @Autowired HandlerExceptionResolver resolver) {
         this.tokenRepository = tokenRepository;
         this.resolver = resolver;
+    }
+
+    private boolean filterServletPath(String servletPath) {
+        if (servletPath.equals("/") || servletPath.equals("/manifest.json") ||
+                servletPath.equals("/index") || servletPath.equals("/index.html") || servletPath.equals("/favicon.ico")) {
+            return true;
+        }
+        Pattern pattern = Pattern.compile("^/static(?:/[A-Za-z0-9_.]*)*");
+        return pattern.matcher(servletPath).matches();
     }
 
     @Override
@@ -42,7 +52,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
         request.setAttribute(CsrfToken.class.getName(), csrfToken);
         request.setAttribute(csrfToken.getParameterName(), csrfToken);
-        if (request.getServletPath().equals("/auth/login")) {
+        if (this.filterServletPath(request.getServletPath())) {
             try {
                 filterChain.doFilter(request, response);
             } catch (Exception e) {

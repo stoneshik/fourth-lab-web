@@ -1,7 +1,5 @@
 package lab.fourth.lab.controller;
 
-import lab.fourth.lab.api.Status;
-import lab.fourth.lab.api.user.UserResponseFabric;
 import lab.fourth.lab.entity.User;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
