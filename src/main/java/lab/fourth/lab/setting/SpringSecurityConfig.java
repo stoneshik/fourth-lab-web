@@ -38,27 +38,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
                 .disable()
                 .addFilterAt(new JwtCsrfFilter(jwtTokenRepository, resolver), CsrfFilter.class)
-            .authorizeRequests()
-                //Доступ только для не зарегистрированных пользователей
-                .antMatchers("/api/user/registration", "/api/user/auth").not().fullyAuthenticated()
-                //Доступ только для пользователей с ролью Администратор
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/main", "/main.jsp").hasRole("USER")
-                //Доступ разрешен всем пользователей
-                .antMatchers("/", "/manifest.json", "/index", "/index.html", "/static/**").permitAll()
-
                 //Все остальные страницы требуют аутентификации
-            .anyRequest().authenticated()
-            .and()
                 //Настройка для входа в систему
                 .formLogin()
                 .loginPage("/")
                 //Перенаправление на главную страницу после успешного входа
                 .defaultSuccessUrl("/main")
-                .permitAll()
             .and()
                 .logout()
-                .permitAll()
                 .logoutSuccessUrl("/")
             .and()
                 .httpBasic()

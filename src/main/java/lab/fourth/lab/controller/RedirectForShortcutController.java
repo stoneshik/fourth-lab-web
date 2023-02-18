@@ -12,6 +12,6 @@ public class RedirectForShortcutController {
 
     @GetMapping("/index")
     public String redirectForIndexPage() {
-        return "redirect:/";
+        return "forward:/";
     }
 }

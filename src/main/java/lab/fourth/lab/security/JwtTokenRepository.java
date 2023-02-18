@@ -33,9 +33,9 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     public CsrfToken generateToken(HttpServletRequest httpServletRequest) {
         String id = UUID.randomUUID().toString().replace("-", "");
         Date now = new Date();
-        Date exp = Date.from(LocalDateTime.now().plusMinutes(30)
-                .atZone(ZoneId.systemDefault()).toInstant());
-
+        Date exp = Date.from(
+                LocalDateTime.now().plusMinutes(30).atZone(ZoneId.systemDefault()).toInstant()
+        );
         String token = "";
         try {
             token = Jwts.builder()
@@ -63,7 +63,7 @@ public class JwtTokenRepository implements CsrfTokenRepository {
 
     @Override
     public CsrfToken loadToken(HttpServletRequest request) {
-        TokenDto tokenDto = TokenFabricSession.newInstance(request);
+        TokenDto tokenDto = TokenFabric.newInstance(request);
         if (TokenUtil.isEmpty(tokenDto)) {
             return null;
         }

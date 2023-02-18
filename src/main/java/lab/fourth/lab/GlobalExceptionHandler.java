@@ -17,33 +17,24 @@ import javax.servlet.http.HttpServletResponse;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final JwtTokenRepository tokenRepository;
+    private record ErrorInfo(String url, String info) {}
 
     public GlobalExceptionHandler(JwtTokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
     }
 
-    @ExceptionHandler({AuthenticationException.class, MissingCsrfTokenException.class, InvalidCsrfTokenException.class, SessionAuthenticationException.class})
-    public ErrorInfo handleAuthenticationException(RuntimeException ex, HttpServletRequest request, HttpServletResponse response) {
+    @ExceptionHandler({
+        AuthenticationException.class,
+        MissingCsrfTokenException.class,
+        InvalidCsrfTokenException.class,
+        SessionAuthenticationException.class
+    })
+    public ErrorInfo handleAuthenticationException(
+            RuntimeException ex,
+            HttpServletRequest request,
+            HttpServletResponse response) {
         this.tokenRepository.clearToken(request);
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        //response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return new ErrorInfo(UrlUtils.buildFullRequestUrl(request), "error.authorization");
-    }
-
-    public static class ErrorInfo {
-        private final String url;
-        private final String info;
-
-        ErrorInfo(String url, String info) {
-            this.url = url;
-            this.info = info;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public String getInfo() {
-            return info;
-        }
     }
 }
