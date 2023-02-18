@@ -4,20 +4,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class TokenFabricSession {
-    public static Token newInstance(HttpServletRequest request) {
+    public static TokenDto newInstance(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Object tokenRaw = session.getAttribute("csrf_token");
+        Object tokenParameterNameRaw = session.getAttribute("csrf_parameter_name");
         Object tokenNameRaw = session.getAttribute("csrf_header");
         if (tokenRaw == null || tokenNameRaw == null) {
-            return new Token("", "");
+            return new TokenDto("", "", "");
         }
-        String token, tokenName;
+        String token, tokenParameterName, tokenName;
         try {
             token = (String) tokenRaw;
+            tokenParameterName = (String) tokenParameterNameRaw;
             tokenName = (String) tokenNameRaw;
         } catch (ClassCastException e) {
-            return new Token("", "");
+            return new TokenDto("", "", "");
         }
-        return new Token(token, tokenName);
+        return new TokenDto(token, tokenParameterName, tokenName);
     }
 }

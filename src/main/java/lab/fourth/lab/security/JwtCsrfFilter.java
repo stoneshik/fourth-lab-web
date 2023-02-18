@@ -2,13 +2,10 @@ package lab.fourth.lab.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
+import lab.fourth.lab.util.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
-import org.springframework.security.web.csrf.InvalidCsrfTokenException;
-import org.springframework.security.web.csrf.MissingCsrfTokenException;
+import org.springframework.security.web.csrf.*;
 import org.springframework.security.web.util.UrlUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
@@ -25,7 +22,9 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
 
     private final HandlerExceptionResolver resolver;
 
-    public JwtCsrfFilter(@Autowired JwtTokenRepository tokenRepository, @Autowired HandlerExceptionResolver resolver) {
+    public JwtCsrfFilter(
+            @Autowired JwtTokenRepository tokenRepository,
+            @Autowired HandlerExceptionResolver resolver) {
         this.tokenRepository = tokenRepository;
         this.resolver = resolver;
     }
@@ -43,10 +42,15 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        request.setAttribute(HttpServletResponse.class.getName(), response);
+        /*request.setAttribute(HttpServletResponse.class.getName(), response);
         CsrfToken csrfToken = this.tokenRepository.loadToken(request);
         boolean missingToken = csrfToken == null;
         if (missingToken) {
+            csrfToken = this.tokenRepository.generateToken(request);
+            this.tokenRepository.saveToken(csrfToken, request, response);
+        }*/
+        CsrfToken csrfToken = this.tokenRepository.loadToken(request);
+        if (csrfToken == null) {
             csrfToken = this.tokenRepository.generateToken(request);
             this.tokenRepository.saveToken(csrfToken, request, response);
         }
@@ -59,30 +63,30 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
             } catch (Exception e) {
                 resolver.resolveException(request, response, null, new MissingCsrfTokenException(csrfToken.getToken()));
             }
-        } else {
-            String actualToken = request.getHeader(csrfToken.getHeaderName());
-            if (actualToken == null) {
-                actualToken = request.getParameter(csrfToken.getParameterName());
+            return;
+        }
+        String actualToken = request.getHeader(csrfToken.getHeaderName());
+        if (actualToken == null) {
+            actualToken = request.getParameter(csrfToken.getParameterName());
+        }
+        try {
+            if (actualToken != null) {
+                Jwts.parser()
+                        .setSigningKey(((JwtTokenRepository) tokenRepository).getSecret())
+                        .parseClaimsJws(actualToken);
+
+                filterChain.doFilter(request, response);
+            } else
+                resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
+        } catch (JwtException e) {
+            if (this.logger.isDebugEnabled()) {
+                this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
             }
-            try {
-                if (actualToken != null) {
-                    Jwts.parser()
-                            .setSigningKey(((JwtTokenRepository) tokenRepository).getSecret())
-                            .parseClaimsJws(actualToken);
 
-                    filterChain.doFilter(request, response);
-                } else
-                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
-            } catch (JwtException e) {
-                if (this.logger.isDebugEnabled()) {
-                    this.logger.debug("Invalid CSRF token found for " + UrlUtils.buildFullRequestUrl(request));
-                }
-
-                if (missingToken) {
-                    resolver.resolveException(request, response, null, new MissingCsrfTokenException(actualToken));
-                } else {
-                    resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
-                }
+            if (missingToken) {
+                resolver.resolveException(request, response, null, new MissingCsrfTokenException(actualToken));
+            } else {
+                resolver.resolveException(request, response, null, new InvalidCsrfTokenException(csrfToken, actualToken));
             }
         }
     }

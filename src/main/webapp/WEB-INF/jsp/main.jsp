@@ -1,7 +1,7 @@
 <%@ page import="lab.fourth.lab.security.TokenFabricSession" %>
-<%@ page import="lab.fourth.lab.security.Token" %>
+<%@ page import="lab.fourth.lab.security.TokenDto" %>
 <%@ page contentType="text/html;charset=utf-8" %>
-<%Token token = TokenFabricSession.newInstance(request);%>
+<%TokenDto token = TokenFabricSession.newInstance(request);%>
 <!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"/><meta http-equiv="Content-type" content="text/html; charset=utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 <meta name="_csrf" content="<%=token.token()%>"/>
 <!-- default header name is X-CSRF-TOKEN -->

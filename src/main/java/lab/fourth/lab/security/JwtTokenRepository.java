@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS;
 
 @Repository
 public class JwtTokenRepository implements CsrfTokenRepository {
@@ -56,31 +54,27 @@ public class JwtTokenRepository implements CsrfTokenRepository {
 
     @Override
     public void saveToken(CsrfToken csrfToken, HttpServletRequest request, HttpServletResponse response) {
-        if (Objects.nonNull(csrfToken)) {
+        if (csrfToken != null) {
             String token = csrfToken.getToken();
             String headerToken = csrfToken.getHeaderName();
             TokenUtil.setValue(request, token, headerToken);
-
-            if (!response.getHeaderNames().contains(ACCESS_CONTROL_EXPOSE_HEADERS)) {
-                response.addHeader(ACCESS_CONTROL_EXPOSE_HEADERS, csrfToken.getHeaderName());
-            }
-            if (response.getHeaderNames().contains(csrfToken.getHeaderName())) {
-                response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-            } else {
-                response.addHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-            }
         }
     }
 
     @Override
     public CsrfToken loadToken(HttpServletRequest request) {
-        return (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        TokenDto tokenDto = TokenFabricSession.newInstance(request);
+        if (TokenUtil.isEmpty(tokenDto)) {
+            return null;
+        }
+        return new DefaultCsrfToken(
+                tokenDto.token(),
+                tokenDto.parameterName(),
+                tokenDto.headerToken()
+        );
     }
 
-    public void clearToken(HttpServletRequest request, HttpServletResponse response) {
+    public void clearToken(HttpServletRequest request) {
         TokenUtil.deleteValue(request);
-        if (response.getHeaderNames().contains("x-csrf-token")) {
-            response.setHeader("x-csrf-token", "");
-        }
     }
 }
