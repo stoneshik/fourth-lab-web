@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { loginFormRequest, registerFormRequest } from "../requests";
 
 export class FormComponent extends Component {
     constructor(props) {
@@ -21,27 +22,32 @@ export class FormComponent extends Component {
 
     handlingSubmitLogin = (event) => {
         event.preventDefault();
-        const errorMessage = this.validateForm();
+        const login = this.state.login;
+        const passwordLogin = this.state.passwordLogin;
+        const errorMessage = this.validateForm(login, passwordLogin);
         if (errorMessage !== false) {
             this.setState({errorMessage: errorMessage});
             return false;
         }
         this.setState({errorMessage: ''});
+        console.log(event);
+        loginFormRequest(login, passwordLogin);
     }
 
     handlingSubmitRegister = (event) => {
         event.preventDefault();
-        const errorMessage = this.validateForm();
+        const login = this.state.login;
+        const passwordLogin = this.state.passwordLogin;
+        const errorMessage = this.validateForm(login, passwordLogin);
         if (errorMessage !== false) {
             this.setState({errorMessage: errorMessage});
             return false;
         }
         this.setState({errorMessage: ''});
+        registerFormRequest(login, passwordLogin);
     }
 
-    validateForm = () => {
-        const login = this.state.login;
-        const passwordLogin = this.state.passwordLogin;
+    validateForm = (login, passwordLogin) => {
         return (
             outputErrorRequired(login, passwordLogin) ||
             outputErrorMaxLength(login, passwordLogin) ||

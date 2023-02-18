@@ -1,5 +1,5 @@
 import $ from "jquery";
-import {Result} from "./utils/Result";
+import { Result } from "./utils/Result";
 
 export const loadDots = (addResult, props) => {
     $.get({
