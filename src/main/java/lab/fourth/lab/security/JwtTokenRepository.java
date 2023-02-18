@@ -20,11 +20,20 @@ import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS
 
 @Repository
 public class JwtTokenRepository implements CsrfTokenRepository {
-
+    private static String token;
+    private static String headerToken;
     private final String secret;
 
     public JwtTokenRepository() {
         this.secret = "springrest";
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public String getHeaderToken() {
+        return headerToken;
     }
 
     public String getSecret() {
@@ -57,13 +66,16 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     @Override
     public void saveToken(CsrfToken csrfToken, HttpServletRequest request, HttpServletResponse response) {
         if (Objects.nonNull(csrfToken)) {
-            if (!response.getHeaderNames().contains(ACCESS_CONTROL_EXPOSE_HEADERS))
+            token = csrfToken.getToken();
+            headerToken = csrfToken.getHeaderName();
+            if (!response.getHeaderNames().contains(ACCESS_CONTROL_EXPOSE_HEADERS)) {
                 response.addHeader(ACCESS_CONTROL_EXPOSE_HEADERS, csrfToken.getHeaderName());
-
-            if (response.getHeaderNames().contains(csrfToken.getHeaderName()))
+            }
+            if (response.getHeaderNames().contains(csrfToken.getHeaderName())) {
                 response.setHeader(csrfToken.getHeaderName(), csrfToken.getToken());
-            else
+            } else {
                 response.addHeader(csrfToken.getHeaderName(), csrfToken.getToken());
+            }
         }
     }
 
@@ -73,7 +85,8 @@ public class JwtTokenRepository implements CsrfTokenRepository {
     }
 
     public void clearToken(HttpServletResponse response) {
-        if (response.getHeaderNames().contains("x-csrf-token"))
+        if (response.getHeaderNames().contains("x-csrf-token")) {
             response.setHeader("x-csrf-token", "");
+        }
     }
 }

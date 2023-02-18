@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class RedirectForShortcutController {
     @GetMapping("/main")
     public String redirectForMainPage() {
-        return "redirect:/main.html";
+        return "redirect:/main.jsp";
     }
 
     @GetMapping("/index")
     public String redirectForIndexPage() {
-        return "redirect:/index.html";
+        return "redirect:/";
     }
 }
