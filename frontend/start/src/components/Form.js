@@ -23,28 +23,27 @@ export class FormComponent extends Component {
     handlingSubmitLogin = (event) => {
         event.preventDefault();
         const login = this.state.login;
-        const passwordLogin = this.state.passwordLogin;
-        const errorMessage = this.validateForm(login, passwordLogin);
+        const password = this.state.passwordLogin;
+        const errorMessage = this.validateForm(login, password);
         if (errorMessage !== false) {
             this.setState({errorMessage: errorMessage});
             return false;
         }
         this.setState({errorMessage: ''});
-        console.log(event);
-        loginFormRequest(login, passwordLogin);
+        loginFormRequest(this, login, password);
     }
 
     handlingSubmitRegister = (event) => {
         event.preventDefault();
         const login = this.state.login;
-        const passwordLogin = this.state.passwordLogin;
-        const errorMessage = this.validateForm(login, passwordLogin);
+        const password = this.state.passwordLogin;
+        const errorMessage = this.validateForm(login, password);
         if (errorMessage !== false) {
             this.setState({errorMessage: errorMessage});
             return false;
         }
         this.setState({errorMessage: ''});
-        registerFormRequest(login, passwordLogin);
+        registerFormRequest(this, login, password);
     }
 
     validateForm = (login, passwordLogin) => {

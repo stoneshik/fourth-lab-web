@@ -33,7 +33,6 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -54,30 +53,24 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+        User userFromDB = this.userRepository.findByUsername(user.getUsername());
 
         if (userFromDB != null) {
             return false;
         }
 
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
+        this.userRepository.save(user);
         return true;
     }
 
     @Transactional
     public boolean deleteUser(Long userId) {
-        if (userRepository.findById(userId).isPresent()) {
-            userRepository.deleteById(userId);
+        if (this.userRepository.findById(userId).isPresent()) {
+            this.userRepository.deleteById(userId);
             return true;
         }
         return false;
-    }
-
-    @Transactional
-    public List<User> usergtList(Long idMin) {
-        return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
-                .setParameter("paramId", idMin).getResultList();
     }
 }

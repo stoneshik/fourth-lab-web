@@ -11,6 +11,7 @@ import lab.fourth.lab.security.TokenDto;
 import lab.fourth.lab.security.TokenFabric;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,15 +43,22 @@ public class AuthController {
         } catch (JsonProcessingException e) {
             return UserResponseFabric.newInstance(Status.CODE_401, "Ошибка в переданном JSON");
         }
+        User loadUser;
         try {
-            if (this.userService.loadUserByUsername(user.getUsername()) == null) {
-                return UserResponseFabric.newInstance(
-                        Status.CODE_401,
-                        "Пользователь с таким именем не существует"
-                );
-            }
+            loadUser = this.userService.loadUserByUsername(user.getUsername());
         } catch (TransactionSystemException e) {
             return UserResponseFabric.newInstance(Status.CODE_401, e.getMessage());
+        } catch (UsernameNotFoundException e) {
+            return UserResponseFabric.newInstance(
+                    Status.CODE_401,
+                    "Пользователя с таким именем не существует"
+            );
+        }
+        if (!user.getPassword().equals(loadUser.getPassword())) {
+            return UserResponseFabric.newInstance(
+                    Status.CODE_401,
+                    "Неверный пароль"
+            );
         }
 
         CsrfToken csrfToken = this.tokenRepository.generateToken(request);
