@@ -12,6 +12,7 @@ import lab.fourth.lab.security.TokenFabric;
 import lab.fourth.lab.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +25,15 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthController {
     private final UserService userService;
     private final JwtTokenRepository tokenRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AuthController(@Autowired UserService userService, @Autowired JwtTokenRepository tokenRepository) {
+    public AuthController(
+            @Autowired UserService userService,
+            @Autowired JwtTokenRepository tokenRepository,
+            @Autowired BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.tokenRepository = tokenRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @PostMapping(path = "/api/user/auth")
@@ -54,6 +60,7 @@ public class AuthController {
                     "Пользователя с таким именем не существует"
             );
         }
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         if (!user.getPassword().equals(loadUser.getPassword())) {
             return UserResponseFabric.newInstance(
                     Status.CODE_401,

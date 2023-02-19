@@ -30,7 +30,7 @@ public class JwtCsrfFilter extends OncePerRequestFilter {
     private boolean filterServletPath(String servletPath) {
         if (servletPath.equals("/") || servletPath.equals("/index") || servletPath.equals("/index.jsp") ||
                 servletPath.equals("/favicon.ico") || servletPath.equals("/manifest.json") ||
-                servletPath.equals("/api/user/register") || servletPath.equals("/api/user/auth")) {
+                servletPath.equals("/api/user/registration") || servletPath.equals("/api/user/auth")) {
             return true;
         }
         Pattern pattern = Pattern.compile("^/static(?:/[A-Za-z0-9_.]*)*");

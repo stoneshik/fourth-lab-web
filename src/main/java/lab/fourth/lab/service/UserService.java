@@ -1,7 +1,5 @@
 package lab.fourth.lab.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 import lab.fourth.lab.entity.Role;
@@ -17,8 +15,6 @@ import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
-    @PersistenceContext
-    private EntityManager em;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
