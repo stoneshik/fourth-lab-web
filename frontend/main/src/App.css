@@ -59,7 +59,6 @@ label {
 }
 #canvas {
   margin-top: 5%;
-  margin-left: 5%;
   padding: 0;
   display: inline-block;
   border: 1px solid #000;
@@ -68,6 +67,10 @@ label {
   margin: 0 0 0 25px;
 }
 /*стили формы */
+#logout {
+  display: inline-block;
+  margin-top: 15px;
+}
 #clean_form {
   padding: 10px;
 }

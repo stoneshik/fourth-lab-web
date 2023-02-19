@@ -171,7 +171,7 @@ class MainForm extends Component {
                 </div>
                 <input type="submit"/>
                 {this.state.errorMessage}
-                <a onClick={this.handlingLogout} id="change-form" href="#">Выйти из аккаунта</a>
+                <a onClick={this.handlingLogout} id="logout" href="#">Выйти из аккаунта</a>
             </form>
         )
     }
