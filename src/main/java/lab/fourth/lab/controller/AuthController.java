@@ -60,8 +60,7 @@ public class AuthController {
                     "Пользователя с таким именем не существует"
             );
         }
-        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
-        if (!user.getPassword().equals(loadUser.getPassword())) {
+        if (!this.bCryptPasswordEncoder.matches(user.getPassword(), loadUser.getPassword())) {
             return UserResponseFabric.newInstance(
                     Status.CODE_401,
                     "Неверный пароль"
