@@ -25,4 +25,9 @@ public class RedirectApi {
     public String redirectRegistration() {
         return "forward:/main";
     }
+
+    @GetMapping("/api/user/logout")
+    public String redirectLogout() {
+        return "forward:/main";
+    }
 }
