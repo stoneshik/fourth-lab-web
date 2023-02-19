@@ -59,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/api/user/registration")
-    public UserResponse addUser(HttpServletRequest request, HttpServletResponse response) {
+    public UserResponse registerUser(HttpServletRequest request, HttpServletResponse response) {
         User newUser;
         try {
             newUser = this.readUserFromPost(request);
@@ -85,8 +85,8 @@ public class UserController {
         return UserResponseFabric.newInstance(Status.CODE_200, true, token);
     }
 
-    @PostMapping(path = "/api/user/auth")
-    public UserResponse getAuthUser(HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/api/user/auth")
+    public UserResponse authUser(HttpServletRequest request, HttpServletResponse response) {
         User user;
         try {
             user = this.readUserFromPost(request);
@@ -116,6 +116,13 @@ public class UserController {
 
         TokenDto token = this.createToken(request, response);
 
+        return UserResponseFabric.newInstance(Status.CODE_200, true, token);
+    }
+
+    @PostMapping("/api/user/logout")
+    public UserResponse getAuthUser(HttpServletRequest request) {
+        this.tokenRepository.clearToken(request);
+        TokenDto token = TokenFabric.newInstance();
         return UserResponseFabric.newInstance(Status.CODE_200, true, token);
     }
 }

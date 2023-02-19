@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { actionAddResult, actionPassingR } from "../redux/actions";
-import { addNewDotsRequest } from "../requests";
+import { addNewDotsRequest, logoutRequest } from "../requests";
 
 class MainForm extends Component {
     constructor(props) {
@@ -66,6 +66,9 @@ class MainForm extends Component {
             rValues[i] = e.value[i].code;
         }
         this.props.passingR(this.props, rValues);
+    }
+    handlingLogout() {
+        logoutRequest();
     }
     validateForm() {
         const x = this.state.selectedValuesX;
@@ -168,6 +171,7 @@ class MainForm extends Component {
                 </div>
                 <input type="submit"/>
                 {this.state.errorMessage}
+                <a onClick={this.handlingLogout} id="change-form" href="#">Выйти из аккаунта</a>
             </form>
         )
     }

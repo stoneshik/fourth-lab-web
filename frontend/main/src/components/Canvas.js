@@ -80,7 +80,7 @@ class CanvasComponent extends Component {
     render() {
         return (
             <div>
-                <canvas id="canvas" height="450" width="450" onClick={(e) => this.handleClick(e)}></canvas>
+                <canvas id="canvas" height="500" width="500" onClick={(e) => this.handleClick(e)}></canvas>
                 {this.state.errorMessage}
                 {this.updateCanvas(this.props.results, this.props.counter)}
             </div>

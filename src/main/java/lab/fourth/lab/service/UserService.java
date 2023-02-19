@@ -28,33 +28,30 @@ public class UserService implements UserDetailsService {
     @Transactional
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = this.userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-
         return user;
     }
 
     @Transactional
     public User findUserById(Long userId) {
-        Optional<User> userFromDb = userRepository.findById(userId);
+        Optional<User> userFromDb = this.userRepository.findById(userId);
         return userFromDb.orElse(new User());
     }
 
     @Transactional
     public List<User> allUsers() {
-        return userRepository.findAll();
+        return this.userRepository.findAll();
     }
 
     @Transactional
     public boolean saveUser(User user) {
         User userFromDB = this.userRepository.findByUsername(user.getUsername());
-
         if (userFromDB != null) {
             return false;
         }
-
         user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
         user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         this.userRepository.save(user);

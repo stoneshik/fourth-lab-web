@@ -6,7 +6,6 @@ export const loadDots = (addResult, props) => {
         url: "../api/dot/load",
     }).done(function(data) {
         addResultsInTable(data, addResult, props);
-        console.log(data);
     });
 }
 
@@ -16,7 +15,6 @@ export const addNewDotsRequest = (dotsCords, addResult, props) => {
         data: { "dots": String(JSON.stringify(dotsCords)) }
     }).done(function(data) {
         addResultsInTable(data, addResult, props);
-        console.log(data);
     });
 }
 
@@ -26,7 +24,15 @@ export const clearDotsRequest = (clearResults, props) => {
         url: "../api/dot/clear"
     }).done(function(data) {
         clearResults(props);
-        console.log(data);
+    });
+}
+
+export const logoutRequest = () => {
+    $.post({
+        url: "../api/user/logout",
+        data: {}
+    }).done(function(data) {
+        window.location.replace("../");
     });
 }
 
