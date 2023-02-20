@@ -1,19 +1,19 @@
 package lab.fourth.lab.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dot")
+@Table(name = "t_dot")
 public class Dot {
     @Id
-    @SequenceGenerator(name = "sequence_generator", sequenceName = "id_sequence_dot", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator")
+    @SequenceGenerator(name = "sequence_generator_dot", sequenceName = "id_sequence_dot", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence_generator_dot")
     private Long id;
     @NotNull
     @DecimalMin("-5.0")

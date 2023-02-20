@@ -3,10 +3,10 @@ package lab.fourth.lab.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import lab.fourth.lab.api.dot.DotResponse;
 import lab.fourth.lab.api.dot.DotResponseFabric;
-import lab.fourth.lab.api.dot.Status;
+import lab.fourth.lab.api.Status;
 import lab.fourth.lab.entity.Dot;
 import lab.fourth.lab.service.DotService;
 import lab.fourth.lab.util.DotUtil;
@@ -30,7 +30,7 @@ public class DotController {
         return DotResponseFabric.newInstance(Status.CODE_200, dots);
     }
 
-    @PostMapping("api/dot/add")
+    @PostMapping("/api/dot/add")
     public DotResponse add(HttpServletRequest request) {
         long startTime = System.nanoTime();
         String dotsRawString = request.getParameter("dots");
@@ -53,7 +53,7 @@ public class DotController {
         return DotResponseFabric.newInstance(Status.CODE_201, dots, true);
     }
 
-    @DeleteMapping("api/dot/clear")
+    @DeleteMapping("/api/dot/clear")
     public DotResponse clear() {
         this.dotService.clear();
         return DotResponseFabric.newInstance(Status.CODE_201, true);

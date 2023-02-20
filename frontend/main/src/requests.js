@@ -1,12 +1,11 @@
 import $ from "jquery";
-import {Result} from "./utils/Result";
+import { Result } from "./utils/Result";
 
 export const loadDots = (addResult, props) => {
     $.get({
         url: "../api/dot/load",
     }).done(function(data) {
         addResultsInTable(data, addResult, props);
-        console.log(data);
     });
 }
 
@@ -16,7 +15,6 @@ export const addNewDotsRequest = (dotsCords, addResult, props) => {
         data: { "dots": String(JSON.stringify(dotsCords)) }
     }).done(function(data) {
         addResultsInTable(data, addResult, props);
-        console.log(data);
     });
 }
 
@@ -26,12 +24,20 @@ export const clearDotsRequest = (clearResults, props) => {
         url: "../api/dot/clear"
     }).done(function(data) {
         clearResults(props);
-        console.log(data);
+    });
+}
+
+export const logoutRequest = () => {
+    $.post({
+        url: "../api/user/logout",
+        data: {}
+    }).done(function(data) {
+        window.location.replace("../");
     });
 }
 
 
-const addResultsInTable = (data, addResult, props) => {
+function addResultsInTable(data, addResult, props) {
     const dots = data.dots;
     if (dots === undefined || dots == null || dots.length === undefined) {
         return;
