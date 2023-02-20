@@ -11,6 +11,7 @@
     <groupId>lab.fourth</groupId>
     <artifactId>lab</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
     <name>lab</name>
     <description>lab</description>
     <properties>
@@ -113,6 +114,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.2</version>
             </plugin>
         </plugins>
     </build>
